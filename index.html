@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech For V I</title>
+    <style>
+        /* ===== CSS Variables ===== */
+        :root {
+            --bg-primary: #f8f9fa;
+            --bg-secondary: #ffffff;
+            --text-primary: #1a1a2e;
+            --text-secondary: #4a4a6a;
+            --accent: #0d6efd;
+            --accent-hover: #0b5ed7;
+            --border: #dee2e6;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            --radius: 16px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --font: 'Segoe UI', 'Arial', system-ui, -apple-system, sans-serif;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-primary: #121212;
+                --bg-secondary: #1e1e2e;
+                --text-primary: #eaeaea;
+                --text-secondary: #b0b0c8;
+                --border: #333344;
+                --shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+                --accent: #4a9eff;
+                --accent-hover: #6aafff;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            padding: 20px;
+            padding-bottom: 120px;
+            line-height: 1.8;
+            transition: background var(--transition), color var(--transition);
+            min-height: 100vh;
+            font-size: 20px; /* بڑا ٹیکسٹ */
+        }
+
+        /* ===== Header ===== */
+        .app-header {
+            text-align: center;
+            padding: 30px 20px 20px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+            transition: background var(--transition);
+        }
+
+        .app-header h1 {
+            font-size: clamp(36px, 6vw, 56px);
+            font-weight: 800;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+        }
+
+        .app-header p {
+            color: var(--text-secondary);
+            font-size: 22px;
+            margin-top: 8px;
+        }
+
+        /* ===== Language Indicator ===== */
+        .lang-indicator {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 6px 24px;
+            background: var(--accent);
+            color: #fff;
+            border-radius: 40px;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: background var(--transition);
+        }
+
+        /* ===== Rules Container ===== */
+        #rules-container {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            max-width: 900px;
+            margin: 0 auto 30px;
+        }
+
+        .rule-card {
+            background: var(--bg-secondary);
+            border-left: 6px solid var(--accent);
+            padding: 22px 28px;
+            border-radius: var(--radius);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+            font-size: clamp(18px, 1.4vw, 24px);
+            line-height: 1.9;
+        }
+
+        .rule-card:hover {
+            transform: translateX(6px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .rule-card .rule-number {
+            display: inline-block;
+            font-weight: 700;
+            color: var(--accent);
+            margin-right: 10px;
+            font-size: 1.1em;
+        }
+
+        /* ===== Live Announcer (Screen Reader only) ===== */
+        #announcer {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
+        /* ===== Bottom Controls ===== */
+        .controls {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            padding: 18px 24px;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+            z-index: 1000;
+            transition: background var(--transition), border var(--transition);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .controls button {
+            padding: 16px 40px;
+            font-size: 20px;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all var(--transition);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            min-width: 200px;
+            letter-spacing: 0.3px;
+        }
+
+        .controls button:hover,
+        .controls button:focus-visible {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .controls button:focus-visible {
+            outline: 3px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        .controls button:active {
+            transform: scale(0.96);
+        }
+
+        .btn-primary {
+            background: var(--accent) !important;
+            color: #fff !important;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover) !important;
+        }
+
+        .btn-secondary {
+            background: var(--bg-primary) !important;
+            color: var(--text-primary) !important;
+            border: 2px solid var(--border) !important;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent) !important;
+        }
+
+        /* ===== Modal ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            animation: fadeIn 0.25s ease;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+
+        .modal[aria-hidden="false"] {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 36px 32px;
+            border-radius: var(--radius);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            transition: background var(--transition);
+            scroll-behavior: smooth;
+        }
+
+        .modal-content h2 {
+            font-size: 32px;
+            margin-bottom: 4px;
+            color: var(--accent);
+        }
+
+        .modal-content .subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 28px;
+            font-size: 20px;
+        }
+
+        /* ===== Group items in modal: heading + button in one line ===== */
+        .group-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 14px 18px;
+            margin-bottom: 12px;
+            background: var(--bg-primary);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: background var(--transition);
+            flex-wrap: wrap; /* چھوٹی اسکرین پر لپیٹ جائے */
+        }
+
+        .group-item .group-label {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+            flex: 1 1 auto;
+        }
+
+        .group-item button {
+            padding: 12px 24px;
+            font-size: 18px;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            background: var(--accent);
+            color: #fff;
+            transition: all var(--transition);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .group-item button:hover,
+        .group-item button:focus-visible {
+            background: var(--accent-hover);
+            transform: scale(1.02);
+        }
+
+        .group-item button:focus-visible {
+            outline: 3px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        .modal-close-btn {
+            width: 100%;
+            margin-top: 28px;
+            padding: 18px;
+            font-size: 20px;
+            font-weight: 700;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            background: transparent;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .modal-close-btn:hover,
+        .modal-close-btn:focus-visible {
+            background: var(--border);
+            border-color: var(--accent);
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 768px) {
+            body {
+                padding: 16px;
+                padding-bottom: 140px;
+                font-size: 18px;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+                padding: 14px 16px;
+            }
+
+            .controls button {
+                width: 100%;
+                max-width: 320px;
+                min-width: unset;
+                padding: 14px 20px;
+                font-size: 18px;
+            }
+
+            .modal-content {
+                padding: 24px 16px;
+            }
+
+            .rule-card {
+                padding: 18px 20px;
+                font-size: 17px;
+            }
+
+            .app-header h1 {
+                font-size: 32px;
+            }
+
+            .group-item {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+
+            .group-item button {
+                width: 100%;
+                white-space: normal;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .controls button {
+                font-size: 16px;
+                padding: 12px 16px;
+            }
+
+            .modal-content h2 {
+                font-size: 26px;
+            }
+
+            .group-item .group-label {
+                font-size: 17px;
+            }
+        }
+
+        /* ===== Reduced Motion ===== */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        :focus-visible {
+            outline: 3px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-hover);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== Announcer ===== -->
+    <div id="announcer" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- ===== Header ===== -->
+    <header class="app-header">
+        <h1>Tech for V I</h1>
+        <p>Community Guidelines</p>
+        <span class="lang-indicator" id="langIndicator">English</span>
+    </header>
+
+    <!-- ===== Rules ===== -->
+    <main id="rules-container" role="main" aria-label="Community Rules"></main>
+
+    <!-- ===== Bottom Controls ===== -->
+    <nav class="controls" role="navigation" aria-label="Main Navigation">
+        <button class="btn-secondary" id="switchLangBtn" aria-label="Switch language">
+            Switch Language
+        </button>
+        <button class="btn-primary" id="joinGroupBtn" aria-label="Open join group options">
+            Join Group
+        </button>
+    </nav>
+
+    <!-- ===== Modal ===== -->
+    <div id="groupModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true">
+        <div class="modal-content" role="document">
+            <h2 id="modalTitle">Join Our Community</h2>
+            <p class="subtitle">Developed by Muhammad Hanzala</p>
+
+            <!-- Each group in one line: label + button -->
+            <div class="group-item">
+                <span class="group-label">Male Group (India / Pakistan)</span>
+                <button onclick="window.open('https://chat.whatsapp.com/JtUiteJHCbGARylI729svT', '_blank')">
+                    Join
+                </button>
+            </div>
+
+            <div class="group-item">
+                <span class="group-label">Female Group (Pakistan / India)</span>
+                <button onclick="window.open('https://chat.whatsapp.com/EZhMNcxZs8GKd78iMNxMDC', '_blank')">
+                    Join
+                </button>
+            </div>
+
+            <div class="group-item">
+                <span class="group-label">International Group</span>
+                <button onclick="window.open('https://chat.whatsapp.com/FDQxGVfsjuTBKBaYxzw3s2', '_blank')">
+                    Join
+                </button>
+            </div>
+
+            <div class="group-item">
+                <span class="group-label">Coding Group</span>
+                <button onclick="window.open('https://chat.whatsapp.com/BcbwAqoM9PuJEYSMxXTBrC', '_blank')">
+                    Join
+                </button>
+            </div>
+
+            <div class="group-item">
+                <span class="group-label">Gaming Group</span>
+                <button onclick="window.open('https://chat.whatsapp.com/D6uukm3O593ATI8HZfqKBU', '_blank')">
+                    Join
+                </button>
+            </div>
+
+            <button class="modal-close-btn" id="closeModalBtn" aria-label="Close dialog">
+                Close Window
+            </button>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // =============================================
+            // 1. DATA (No emojis, plain text)
+            // =============================================
+            const RULES_DATA = {
+                english: [
+                    { num: 1, text: 'It is mandatory to introduce yourself within 24 hours of joining the group, including your full name, country, city, and the device you are using.' },
+                    { num: 2, text: 'Before asking any question, state your name, device name, and Android version.' },
+                    { num: 3, text: 'Keep your message clear, keep the screen reader volume low, and strictly limit the conversation to the question.' },
+                    { num: 4, text: 'If you do not receive a response within 24 hours, you may resend your message.' },
+                    { num: 5, text: 'Treat each other with respect, avoid unnecessary arguments, and use reply feature.' },
+                    { num: 6, text: 'Once you receive an answer, react with a thumbs up or red heart.' },
+                    { num: 7, text: 'Articles, social media links, emojis, audio, or images are strictly prohibited.' },
+                    { num: 8, text: 'Share links only when a member has specifically requested it.' },
+                    { num: 9, text: 'Sending personal messages to any member without consent is prohibited.' }
+                ],
+                urdu: [
+                    { num: 1, text: 'گروپ میں شامل ہونے کے بعد 24 گھنٹوں کے اندر اپنا تعارف کروانا لازمی ہے جس میں آپ کا پورا نام، ملک، شہر اور استعمال ہونے والی ڈیوائس شامل ہو۔' },
+                    { num: 2, text: 'کوئی بھی سوال پوچھنے سے پہلے اپنا نام، ڈیوائس کا نام، اور اینڈرائیڈ ورژن بتائیں۔' },
+                    { num: 3, text: 'اپنا پیغام واضح رکھیں، سکرین ریڈر کی آواز کم رکھیں، اور گفتگو کو سختی سے سوال تک محدود رکھیں۔' },
+                    { num: 4, text: 'اگر آپ کو 24 گھنٹے کے اندر جواب نہ ملے، تو آپ اپنا پیغام دوبارہ بھیج سکتے ہیں۔' },
+                    { num: 5, text: 'ایک دوسرے کے ساتھ احترام سے پیش آئیں، غیر ضروری بحث نہ کریں، اور ریپلائی فیچر استعمال کریں۔' },
+                    { num: 6, text: 'جب آپ کو جواب مل جائے، تو اس پیغام پر thumbs up یا red heart کا ری ایکشن دیں۔' },
+                    { num: 7, text: 'آرٹیکلز، سوشل میڈیا لنکس، ایموجیز، آڈیو، یا تصاویر شیئر کرنے کی سخت ممانعت ہے۔' },
+                    { num: 8, text: 'لنک تبھی شیئر کریں جب کسی رکن نے خاص طور پر اس کی درخواست کی ہو۔' },
+                    { num: 9, text: 'کسی رکن کو اجازت کے بغیر ذاتی پیغام بھیجنا منع ہے۔' }
+                ],
+                hindi: [
+                    { num: 1, text: 'ग्रुप में शामिल होने के बाद 24 घंटों के भीतर अपना परिचय देना अनिवार्य है, जिसमें आपका नाम, देश, शहर और डिवाइस का नाम शामिल हो।' },
+                    { num: 2, text: 'प्रश्न पूछने से पहले अपना नाम, डिवाइस का नाम और एंड्रॉइड संस्करण बताएं।' },
+                    { num: 3, text: 'अपना संदेश स्पष्ट रखें, स्क्रीन रीडर की आवाज़ कम रखें और बातचीत को प्रश्न तक सीमित रखें।' },
+                    { num: 4, text: 'यदि 24 घंटों के भीतर उत्तर न मिले, तो आप संदेश दोबारा भेज सकते हैं।' },
+                    { num: 5, text: 'सम्मान से पेश आएं, अनावश्यक बहस न करें और रिप्लाई फीचर का उपयोग करें।' },
+                    { num: 6, text: 'उत्तर मिलने पर thumbs up या red heart के साथ प्रतिक्रिया करें।' },
+                    { num: 7, text: 'लेख, सोशल मीडिया लिंक, इमोजी, ऑडियो या चित्र साझा करना सख्त मना है।' },
+                    { num: 8, text: 'लिंक तभी साझा करें जब किसी सदस्य ने अनुरोध किया हो।' },
+                    { num: 9, text: 'बिना अनुमति के किसी को व्यक्तिगत संदेश भेजना मना है।' }
+                ]
+            };
+
+            const LANG_META = {
+                english: { label: 'English', direction: 'ltr' },
+                urdu: { label: 'اردو', direction: 'rtl' },
+                hindi: { label: 'हिन्दी', direction: 'ltr' }
+            };
+
+            // =============================================
+            // 2. STATE
+            // =============================================
+            let currentLang = 'english';
+            let isModalOpen = false;
+            const announcer = document.getElementById('announcer');
+            const container = document.getElementById('rules-container');
+            const langIndicator = document.getElementById('langIndicator');
+            const modal = document.getElementById('groupModal');
+
+            // =============================================
+            // 3. FUNCTIONS
+            // =============================================
+
+            function announce(msg) {
+                if (!announcer) return;
+                announcer.textContent = '';
+                void announcer.offsetWidth;
+                announcer.textContent = msg;
+            }
+
+            function renderRules() {
+                const rules = RULES_DATA[currentLang];
+                if (!rules) return;
+
+                const fragment = document.createDocumentFragment();
+                rules.forEach((rule) => {
+                    const card = document.createElement('div');
+                    card.className = 'rule-card';
+                    card.setAttribute('role', 'article');
+
+                    const numberSpan = document.createElement('span');
+                    numberSpan.className = 'rule-number';
+                    numberSpan.textContent = '#' + rule.num;
+
+                    const textSpan = document.createElement('span');
+                    textSpan.textContent = ' ' + rule.text;
+
+                    card.appendChild(numberSpan);
+                    card.appendChild(textSpan);
+                    fragment.appendChild(card);
+                });
+
+                container.innerHTML = '';
+                container.appendChild(fragment);
+
+                const meta = LANG_META[currentLang];
+                if (langIndicator) {
+                    langIndicator.textContent = meta.label;
+                    langIndicator.style.direction = meta.direction;
+                }
+                document.documentElement.dir = meta.direction;
+
+                announce('Language switched to ' + meta.label + '. ' + rules.length + ' rules loaded.');
+            }
+
+            function switchLanguage() {
+                const langs = Object.keys(RULES_DATA);
+                const currentIndex = langs.indexOf(currentLang);
+                const nextIndex = (currentIndex + 1) % langs.length;
+                currentLang = langs[nextIndex];
+                renderRules();
+            }
+
+            function openModal() {
+                if (isModalOpen) return;
+                isModalOpen = true;
+                modal.setAttribute('aria-hidden', 'false');
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+
+                const firstButton = modal.querySelector('button');
+                if (firstButton) {
+                    setTimeout(() => firstButton.focus(), 50);
+                }
+                announce('Join group dialog opened. Choose your group.');
+            }
+
+            function closeModal() {
+                if (!isModalOpen) return;
+                isModalOpen = false;
+                modal.setAttribute('aria-hidden', 'true');
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+
+                const joinBtn = document.getElementById('joinGroupBtn');
+                if (joinBtn) {
+                    setTimeout(() => joinBtn.focus(), 50);
+                }
+                announce('Dialog closed.');
+            }
+
+            function toggleModal() {
+                if (isModalOpen) {
+                    closeModal();
+                } else {
+                    openModal();
+                }
+            }
+
+            function handleModalKeydown(e) {
+                if (!isModalOpen) return;
+                if (e.key === 'Escape') {
+                    e.preventDefault();
+                    closeModal();
+                    return;
+                }
+                if (e.key === 'Tab') {
+                    const focusable = modal.querySelectorAll(
+                        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+                    );
+                    if (focusable.length === 0) return;
+                    const first = focusable[0];
+                    const last = focusable[focusable.length - 1];
+                    if (e.shiftKey && document.activeElement === first) {
+                        e.preventDefault();
+                        last.focus();
+                    } else if (!e.shiftKey && document.activeElement === last) {
+                        e.preventDefault();
+                        first.focus();
+                    }
+                }
+            }
+
+            function handleModalBackdropClick(e) {
+                if (isModalOpen && e.target === modal) {
+                    closeModal();
+                }
+            }
+
+            // =============================================
+            // 4. INIT
+            // =============================================
+            renderRules();
+
+            // =============================================
+            // 5. EVENTS
+            // =============================================
+            const switchBtn = document.getElementById('switchLangBtn');
+            if (switchBtn) {
+                switchBtn.addEventListener('click', switchLanguage);
+                switchBtn.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        switchLanguage();
+                    }
+                });
+            }
+
+            const joinBtn = document.getElementById('joinGroupBtn');
+            if (joinBtn) {
+                joinBtn.addEventListener('click', toggleModal);
+                joinBtn.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        toggleModal();
+                    }
+                });
+            }
+
+            const closeBtn = document.getElementById('closeModalBtn');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', closeModal);
+                closeBtn.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        closeModal();
+                    }
+                });
+            }
+
+            document.addEventListener('keydown', handleModalKeydown);
+            modal.addEventListener('click', handleModalBackdropClick);
+
+            console.log('Tech for V I — App initialized.');
+        })();
+    </script>
+</body>
+</html>
