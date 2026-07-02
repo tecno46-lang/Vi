@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tech For V I</title>
+
+    <!-- PDF.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js">
+    </script>
+
+    <style>
+        /* ===== CSS VARIABLES ===== */
+        :root {
+            --bg: #f5f7fa;
+            --card: #ffffff;
+            --text: #1e2a3a;
+            --border: #d0d7e2;
+            --accent: #0a6bff;
+            --shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+            --radius: 14px;
+            --font: 'Segoe UI', Roboto, system-ui, sans-serif;
+            --transition: 0.3s ease;
+        }
+
+        body.dark {
+            --bg: #12161c;
+            --card: #1e2630;
+            --text: #e8edf5;
+            --border: #2f3a47;
+            --accent: #4a9eff;
+            --shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            padding: 20px;
+            min-height: 100vh;
+            transition: background var(--transition), color var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ===== TOP MENU BUTTON ===== */
+        .menu-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: 40px;
+            padding: 10px 18px;
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: var(--text);
+            box-shadow: var(--shadow);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .menu-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* ===== DROPDOWN MENU ===== */
+        .dropdown {
+            position: fixed;
+            top: 75px;
+            left: 20px;
+            z-index: 1001;
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 8px 0;
+            min-width: 220px;
+            display: none;
+            flex-direction: column;
+        }
+
+        .dropdown.open {
+            display: flex;
+        }
+
+        .dropdown button {
+            background: transparent;
+            border: none;
+            padding: 12px 24px;
+            text-align: left;
+            font-size: 1.05rem;
+            font-weight: 500;
+            color: var(--text);
+            cursor: pointer;
+            transition: background 0.15s;
+            width: 100%;
+        }
+
+        .dropdown button:hover,
+        .dropdown button:focus-visible {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .dropdown button:focus-visible {
+            outline: 3px solid var(--accent);
+            outline-offset: -2px;
+        }
+
+        .dropdown .menu-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 4px 12px;
+        }
+
+        /* ===== MAIN INTERFACE ===== */
+        #mainInterface {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+            width: 100%;
+            text-align: center;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        #mainInterface.hidden {
+            display: none;
+        }
+
+        .main-title {
+            font-size: clamp(2.6rem, 8vw, 4.8rem);
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--accent), #6f42c1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .main-sub {
+            font-size: 1.3rem;
+            opacity: 0.7;
+            -webkit-text-fill-color: var(--text);
+        }
+
+        /* ===== COMMUNITY SECTION ===== */
+        #communitySection {
+            display: none;
+            width: 100%;
+            max-width: 900px;
+            animation: fadeSlide 0.6s ease;
+        }
+
+        #communitySection.visible {
+            display: block;
+        }
+
+        @keyframes fadeSlide {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .app-header {
+            text-align: center;
+            padding: 28px 20px 18px;
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 28px;
+        }
+
+        .app-header h1 {
+            font-size: clamp(24px, 4vw, 36px);
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        #rules-container {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 30px;
+        }
+
+        .rule-card {
+            background: var(--card);
+            border-left: 5px solid var(--accent);
+            padding: 18px 22px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            font-size: clamp(17px, 1.2vw, 21px);
+            line-height: 1.8;
+            transition: transform 0.15s;
+        }
+
+        .rule-card:hover {
+            transform: translateX(4px);
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            padding: 16px 0;
+            border-top: 1px solid var(--border);
+            margin-top: 20px;
+        }
+
+        .controls button {
+            padding: 14px 32px;
+            font-size: 18px;
+            font-weight: 600;
+            border: none;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--bg);
+            color: var(--text);
+            border: 2px solid var(--border);
+            min-width: 160px;
+        }
+
+        .controls button:hover,
+        .controls button:focus-visible {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background: var(--accent) !important;
+            color: #fff !important;
+            border-color: var(--accent) !important;
+        }
+
+        .btn-primary:hover {
+            background: #0055d4 !important;
+        }
+
+        /* ===== PDF READER OVERLAY ===== */
+        #pdfReaderOverlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: var(--bg);
+            z-index: 2000;
+            padding: 40px 20px;
+            overflow-y: auto;
+            animation: fadeSlide 0.4s ease;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        #pdfReaderOverlay.open {
+            display: flex;
+        }
+
+        .pdf-reader-box {
+            background: var(--card);
+            max-width: 800px;
+            width: 100%;
+            padding: 30px 28px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .pdf-reader-box h2 {
+            font-size: 28px;
+            margin-bottom: 6px;
+            color: var(--accent);
+        }
+
+        .pdf-reader-box .sub-desc {
+            margin-bottom: 20px;
+            opacity: 0.8;
+            font-size: 1rem;
+        }
+
+        /* ===== MODE TABS ===== */
+        .mode-tabs {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .mode-tabs button {
+            padding: 10px 28px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: 2px solid var(--border);
+            border-radius: 40px;
+            cursor: pointer;
+            background: var(--bg);
+            color: var(--text);
+            transition: all 0.2s;
+        }
+
+        .mode-tabs button:hover {
+            border-color: var(--accent);
+        }
+
+        .mode-tabs button.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        .mode-tabs button:focus-visible {
+            outline: 3px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        /* ===== PDF ACTIONS ===== */
+        .pdf-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .pdf-actions button {
+            padding: 14px 32px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: var(--bg);
+            color: var(--text);
+            border: 2px solid var(--border);
+            min-width: 130px;
+        }
+
+        .pdf-actions button:hover:not(:disabled),
+        .pdf-actions button:focus-visible:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .pdf-actions button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .pdf-actions .btn-accent {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        .pdf-actions .btn-accent:hover:not(:disabled) {
+            background: #0055d4;
+        }
+
+        .pdf-actions .btn-danger {
+            background: #dc3545;
+            color: #fff;
+            border-color: #dc3545;
+        }
+
+        .pdf-actions .btn-danger:hover:not(:disabled) {
+            background: #b02a37;
+        }
+
+        .pdf-status {
+            margin-top: 16px;
+            font-size: 1rem;
+            opacity: 0.8;
+            min-height: 2.2em;
+            word-break: break-word;
+        }
+
+        .pdf-close-btn {
+            margin-top: 30px;
+            padding: 12px 40px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            border: 2px solid var(--border);
+            border-radius: 60px;
+            background: transparent;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .pdf-close-btn:hover {
+            background: var(--border);
+        }
+
+        /* ===== APPLICATION DOWNLOAD OVERLAY ===== */
+        #appDownloadOverlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: var(--bg);
+            z-index: 2000;
+            padding: 40px 20px;
+            overflow-y: auto;
+            animation: fadeSlide 0.4s ease;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #appDownloadOverlay.open {
+            display: flex;
+        }
+
+        .app-download-box {
+            background: var(--card);
+            max-width: 500px;
+            width: 100%;
+            padding: 40px 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .app-download-box h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+
+        .app-download-box p {
+            margin-bottom: 30px;
+            opacity: 0.8;
+            font-size: 1.05rem;
+        }
+
+        .app-download-box .btn-download {
+            padding: 18px 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 60px;
+            background: var(--accent);
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 8px 30px rgba(10, 107, 255, 0.3);
+        }
+
+        .app-download-box .btn-download:hover {
+            transform: scale(1.04);
+            box-shadow: 0 12px 40px rgba(10, 107, 255, 0.4);
+        }
+
+        .app-download-box .btn-download:focus-visible {
+            outline: 3px solid var(--accent);
+            outline-offset: 3px;
+        }
+
+        .app-download-box .app-close-btn {
+            margin-top: 30px;
+            padding: 12px 40px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: 2px solid var(--border);
+            border-radius: 60px;
+            background: transparent;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .app-download-box .app-close-btn:hover {
+            background: var(--border);
+        }
+
+        /* ===== MODAL (Join Group) ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            animation: fadeIn 0.2s ease;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal[aria-hidden="false"] {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-content {
+            background: var(--card);
+            max-width: 660px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px 28px;
+            border-radius: var(--radius);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+        }
+
+        .modal-content h2 {
+            font-size: 26px;
+            margin-bottom: 4px;
+            color: var(--accent);
+        }
+
+        .modal-content .subtitle {
+            opacity: 0.8;
+            margin-bottom: 24px;
+        }
+
+        .group-section {
+            margin: 10px 0;
+        }
+
+        .group-section button {
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 17px;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            background: var(--bg);
+            color: var(--text);
+            border: 2px solid var(--border);
+            transition: all 0.2s;
+            text-align: left;
+            padding-left: 24px;
+        }
+
+        .group-section button:hover,
+        .group-section button:focus-visible {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+            transform: scale(1.01);
+        }
+
+        .modal-close-btn {
+            width: 100%;
+            margin-top: 24px;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: 700;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            background: transparent;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .modal-close-btn:hover,
+        .modal-close-btn:focus-visible {
+            background: var(--border);
+            border-color: var(--accent);
+        }
+
+        /* ===== THEME TOGGLE ===== */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: 40px;
+            padding: 8px 16px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            z-index: 999;
+            color: var(--text);
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            margin-top: 40px;
+            padding: 20px 0 10px;
+            text-align: center;
+            opacity: 0.5;
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+            width: 100%;
+        }
+
+        /* ===== SCREEN READER ONLY ===== */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 640px) {
+            body {
+                padding: 12px;
+            }
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            .controls button {
+                width: 100%;
+                max-width: 320px;
+            }
+            .modal-content {
+                padding: 22px 16px;
+            }
+            .rule-card {
+                padding: 14px 16px;
+                font-size: 16px;
+            }
+            .menu-btn {
+                top: 10px;
+                left: 10px;
+                padding: 8px 14px;
+                font-size: 1.2rem;
+            }
+            .theme-toggle {
+                top: 10px;
+                right: 10px;
+                padding: 6px 12px;
+                font-size: 1rem;
+            }
+            .dropdown {
+                top: 55px;
+                left: 10px;
+                min-width: 180px;
+            }
+            .dropdown button {
+                padding: 10px 18px;
+                font-size: 0.95rem;
+            }
+            .pdf-reader-box {
+                padding: 20px 16px;
+            }
+            .mode-tabs button {
+                padding: 8px 18px;
+                font-size: 0.9rem;
+            }
+            .pdf-actions button {
+                padding: 12px 20px;
+                font-size: 0.95rem;
+                min-width: 100px;
+            }
+            .app-download-box {
+                padding: 30px 20px;
+            }
+            .app-download-box .btn-download {
+                padding: 16px 30px;
+                font-size: 1.05rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        :focus-visible {
+            outline: 3px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0055d4;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== TOP-LEFT MENU BUTTON ===== -->
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false">
+        Menu
+    </button>
+
+    <!-- ===== DROPDOWN MENU ===== -->
+    <div class="dropdown" id="dropdownMenu" role="menu">
+        <button role="menuitem" id="menuJoinCommunity">join community</button>
+        <div class="menu-divider"></div>
+        <button role="menuitem" id="menuReadPdf">Read PDF</button>
+        <button role="menuitem" id="menuReadTxt">read txt file</button>
+        <button role="menuitem" id="menuReadCfc">read CFC file</button>
+        <div class="menu-divider"></div>
+        <button role="menuitem" id="menuApplication">application</button>
+    </div>
+
+    <!-- ===== THEME TOGGLE ===== -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark light mode">
+        <span id="themeIcon">&#9790;</span> Theme
+    </button>
+
+    <!-- ===== MAIN INTERFACE ===== -->
+    <div id="mainInterface">
+        <h1 class="main-title">Tech For V I</h1>
+        <p class="main-sub">Your community for technology and inclusion</p>
+    </div>
+
+    <!-- ===== COMMUNITY SECTION ===== -->
+    <div id="communitySection">
+        <header class="app-header">
+            <h1>welcome to tech for v i community guidelines</h1>
+        </header>
+        <main id="rules-container" role="main" aria-label="Community rules"></main>
+        <nav class="controls" role="navigation" aria-label="Main navigation">
+            <button id="switchLangBtn" class="btn-secondary">Switch Language</button>
+            <button id="joinGroupBtn" class="btn-primary">Join Group</button>
+        </nav>
+        <div class="footer">2026 Tech For V I</div>
+    </div>
+
+    <!-- ===== PDF READER OVERLAY ===== -->
+    <div id="pdfReaderOverlay" class="pdf-overlay" role="dialog" aria-modal="true" aria-labelledby="pdfTitle">
+        <div class="pdf-reader-box">
+            <h2 id="pdfTitle">PDF Reader</h2>
+            <p class="sub-desc">Choose a file and press Read to listen.</p>
+
+            <!-- Mode tabs -->
+            <div class="mode-tabs" id="modeTabs" role="tablist">
+                <button role="tab" aria-selected="true" data-mode="pdf" class="active">PDF</button>
+                <button role="tab" aria-selected="false" data-mode="txt">TXT</button>
+                <button role="tab" aria-selected="false" data-mode="cfc">CFC</button>
+            </div>
+
+            <div class="pdf-actions">
+                <button id="chooseFileBtn" class="btn-accent">Choose PDF</button>
+                <input type="file" id="fileInput" accept=".pdf" style="display:none;" />
+                <button id="readFileBtn" disabled>Read</button>
+                <button id="stopFileBtn" disabled>Stop</button>
+            </div>
+
+            <div class="pdf-status" id="pdfStatus">No file loaded.</div>
+
+            <button class="pdf-close-btn" id="closePdfBtn">Close Reader</button>
+        </div>
+    </div>
+
+    <!-- ===== APPLICATION DOWNLOAD OVERLAY ===== -->
+    <div id="appDownloadOverlay" class="app-overlay" role="dialog" aria-modal="true" aria-labelledby="appTitle">
+        <div class="app-download-box">
+            <h2 id="appTitle">Application</h2>
+            <p>Download the latest version of our application.</p>
+            <button class="btn-download" id="downloadAppBtn">Download Application</button>
+            <br />
+            <button class="app-close-btn" id="closeAppBtn">Close</button>
+        </div>
+    </div>
+
+    <!-- ===== MODAL (Join Group) ===== -->
+    <div id="groupModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true">
+        <div class="modal-content" role="document">
+            <h2 id="modalTitle">Join Our Community</h2>
+            <p class="subtitle">Developed by Muhammad Hanzala</p>
+
+            <div class="group-section">
+                <button onclick="window.open('https://chat.whatsapp.com/IXj2F9kdidIFHMKn0YvVKv','_blank')">join Tech for V I for male group</button>
+            </div>
+            <div class="group-section">
+                <button onclick="window.open('https://chat.whatsapp.com/LuS8Ssq3b4O5JCUGJVjUdH','_blank')">join Tech For V I For Female group</button>
+            </div>
+            <div class="group-section">
+                <button onclick="window.open('https://chat.whatsapp.com/FRVeT8f5PuZ1sinYpfiuj2','_blank')">join Tech For V I International English Text Only group</button>
+            </div>
+            <div class="group-section">
+                <button onclick="window.open('https://chat.whatsapp.com/KYX4UXCQMT80KAHem7F2IZ','_blank')">join Codeing Lab By Tech For V I group</button>
+            </div>
+            <div class="group-section">
+                <button onclick="window.open('https://chat.whatsapp.com/JnzETZ7fo8EKeh1vtuQeAM','_blank')">join Tech For V I Gaming club</button>
+            </div>
+
+            <button class="modal-close-btn" id="closeModalBtn">Close Window</button>
+        </div>
+    </div>
+
+    <!-- ===== SCREEN READER ANNOUNCER ===== -->
+    <div id="announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // ============================================================
+            //  1. RULES DATA
+            // ============================================================
+            const RULES = {
+                english: [
+                    "Rule 1: It is mandatory to introduce yourself within 24 hours of joining the group, including your full name, country, city, and the device you are using. If you use a computer, mention your computer name, Windows version, and the screen reader you are using.",
+                    "Rule 2: Before asking any question, state your name, device name, and Android version. If your question is about a computer, mention the manufacturer, Windows version, and the screen reader you are using on the computer.",
+                    "Rule 3: Keep your message clear, keep the screen reader volume low, be point-to-point, and strictly limit the conversation to the question. If you are requesting an application, it is mandatory to provide your mobile name and Android version so that we can send you the appropriate application. Avoid unnecessary discussion.",
+                    "Rule 4: If you do not receive a response to your question or app request within 24 hours, you may resend your message after this time. However, if you resend the message within 24 hours, you will be warned, and if you continue to do so, you will be removed from the group.",
+                    "Rule 5: Treat each other with respect, avoid unnecessary arguments, and when replying to someone, first select their message so that it is known as a reply. Speak patiently and avoid using any kind of offensive language.",
+                    "Rule 6: Once you receive an answer, react to that person's message with a (thumbs up) or (red heart); there is no need to say thank you or welcome separately.",
+                    "Rule 7: It is strictly forbidden to share any kind of articles, social media links, emojis, audio, unrelated videos, or images in the group. If anyone sends any of these items, they will be removed from the group without notice.",
+                    "Rule 8: Share an application or video link in the group only when a member has specifically requested it. Avoid sharing links without being asked.",
+                    "Rule 9: Sending personal messages to any member is prohibited. If you want to contact someone, first seek their consent in the group. If you contact a user in their personal chat without permission and that user complains to the admin, you will be removed from the group without notice."
+                ],
+                urdu: [
+                    "قاعدہ 1: گروپ میں شامل ہونے کے بعد 24 گھنٹوں کے اندر اپنا تعارف کروانا لازمی ہے جس میں آپ کا پورا نام، ملک، شہر اور استعمال ہونے والی ڈیوائس شامل ہو۔ اگر آپ کمپیوٹر استعمال کرتے ہیں، تو اپنے کمپیوٹر کا نام، ونڈوز کا ورژن اور استعمال ہونے والا سکرین ریڈر بھی بتائیں۔",
+                    "قاعدہ 2: کوئی بھی سوال پوچھنے سے پہلے اپنا نام، ڈیوائس کا نام، اور اینڈرائیڈ ورژن بتائیں۔ اگر آپ کا سوال کمپیوٹر کے حوالے سے ہے، تو مینوفیکچرر، ونڈوز ورژن کا ذکر کریں اور بتائیں کہ کمپیوٹر میں کون سا سکرین ریڈر استعمال کر رہے ہیں۔",
+                    "قاعدہ 3: اپنا پیغام واضح رکھیں، سکرین ریڈر کی آواز کم رکھیں، پوائنٹ ٹو پوائنٹ بات کریں، اور گفتگو کو سختی سے سوال تک محدود رکھیں۔ اگر آپ نے کسی ایپلیکیشن کی ڈیمانڈ کرنی ہے، تو اپنے موبائل کا نام اور اینڈرائیڈ ورژن بتانا لازمی ہوگا تاکہ ہم آپ کو اس کے مطابق ایپلیکیشن بھیج سکیں۔ فضول بحث سے گریز کریں۔",
+                    "قاعدہ 4: اگر آپ کو اپنے سوال یا ایپ کی درخواست پر 24 گھنٹے کے اندر جواب نہ ملے، تو آپ اس وقت کے بعد اپنا پیغام دوبارہ بھیج سکتے ہیں۔ تاہم، اگر آپ 24 گھنٹے کے اندر ہی دوبارہ پیغام بھیجیں گے تو آپ کو وارننگ دی جائے گی، اور اگر آپ پھر بھی ایسا کرتے رہے تو آپ کو گروپ سے نکال دیا جائے گا۔",
+                    "قاعدہ 5: ایک دوسرے کے ساتھ احترام سے پیش آئیں، غیر ضروری بحث نہ کریں، اور جب کسی کو جواب دیں تو پہلے ان کا پیغام سلیکٹ کریں تاکہ معلوم ہو کہ یہ ایک جواب ہے۔ صبر سے بات کریں اور کسی بھی قسم کے توہین آمیز الفاظ استعمال کرنے سے گریز کریں۔",
+                    "قاعدہ 6: جب آپ کو جواب مل جائے، تو اس بندے کے پیغام پر (thumbs up) یا (red heart) کا reaction کریں، اور الگ سے شکریہ یا خوش آمدید کہنے کی ضرورت نہیں ہے۔",
+                    "قاعدہ 7: گروپ میں کسی بھی قسم کے آرٹیکلز، سوشل میڈیا لنکس، ایموجیز، آڈیو، غیر متعلقہ ویڈیو یا تصاویر شیئر کرنے کی سخت ممانعت ہے۔ اگر کوئی بھی بندہ ان چیزوں میں سے کچھ بھی بھیجے گا تو اسے بغیر بتائے گروپ سے ریموو کر دیا جائے گا۔",
+                    "قاعدہ 8: گروپ میں کوئی بھی ایپلیکیشن یا ویڈیو کا لنک تبھی شیئر کریں جب کسی رکن نے خاص طور پر اس کی درخواست کی ہو۔ بغیر مانگے لنکس شیئر کرنے سے گریز کریں۔",
+                    "قاعدہ 9: کسی رکن کو ذاتی پیغام بھیجنا منع ہے۔ اگر آپ کسی سے رابطہ کرنا چاہتے ہیں تو پہلے گروپ میں اس کی رضامندی لیں۔ اگر آپ کسی یوزر کی پرسنل چیٹ پر بغیر اجازت رابطہ کریں گے اور اس یوزر نے ایڈمن کو کمپلین کی، تو آپ کو بغیر بتائے گروپ سے ریموو کر دیا جائے گا۔"
+                ],
+                hindi: [
+                    "नियम 1: ग्रुप में शामिल होने के बाद 24 घंटों के भीतर अपना परिचय देना अनिवार्य है, जिसमें आपका पूरा नाम, देश, शहर और इस्तेमाल होने वाली डिवाइस शामिल हो। यदि आप कंप्यूटर का उपयोग करते हैं, तो अपने कंप्यूटर का नाम, विंडोज संस्करण और उपयोग किए जाने वाले स्क्रीन रीडर का उल्लेख करें।",
+                    "नियम 2: कोई भी प्रश्न पूछने से पहले अपना नाम, डिवाइस का नाम और एंड्रॉइड संस्करण बताएं। यदि आपका प्रश्न कंप्यूटर के बारे में है, तो निर्माता, विंडोज संस्करण और कंप्यूटर पर उपयोग किए जा रहे स्क्रीन रीडर का उल्लेख करें।",
+                    "नियम 3: अपना संदेश स्पष्ट रखें, स्क्रीन रीडर की आवाज़ कम रखें, पॉइंट-टू-पॉइंट बात करें और बातचीत को सख्ती से प्रश्न तक सीमित रखें। यदि आप किसी एप्लिकेशन का अनुरोध कर रहे हैं, तो अपने मोबाइल का नाम और एंड्रॉइड संस्करण प्रदान करना अनिवार्य है ताकि हम आपको उपयुक्त एप्लिकेशन भेज सकें। अनावश्यक चर्चा से बचें।",
+                    "नियम 4: यदि आपको 24 घंटों के भीतर अपने प्रश्न या ऐप अनुरोध का उत्तर नहीं मिलता है, तो आप इस समय के बाद अपना संदेश दोबारा भेज सकते हैं। हालाँकि, यदि आप 24 घंटों के भीतर संदेश दोबारा भेजते हैं, तो आपको चेतावनी दी जाएगी, और यदि आप ऐसा करना जारी रखते हैं, तो आपको ग्रुप से निकाल दिया जाएगा।",
+                    "नियम 5: एक-दूसरे के साथ सम्मान से पेश आएं, अनावश्यक बहस न करें, और जब किसी को उत्तर दें तो पहले उनका संदेश चुनें ताकि यह एक उत्तर के रूप में जाना जाए। धैर्य से बोलें और किसी भी प्रकार की अपमानजनक भाषा का प्रयोग करने से बचें।",
+                    "नियम 6: एक बार जब आपको उत्तर मिल जाए, तो उस व्यक्ति के संदेश पर (thumbs up) या (red heart) के साथ प्रतिक्रिया करें; अलग से धन्यवाद या स्वागत कहने की आवश्यकता नहीं है।",
+                    "नियम 7: ग्रुप में किसी भी प्रकार के लेख, सोशल मीडिया लिंक, इमोजी, ऑडियो, असंबंधित वीडियो या चित्र साझा करना सख्त मना है। यदि कोई भी इनमें से कोई भी वस्तु भेजता है, तो उसे बिना किसी सूचना के ग्रुप से हटा दिया जाएगा।",
+                    "नियम 8: ग्रुप में एप्लिकेशन या वीडियो का लिंक तभी साझा करें जब किसी सदस्य ने विशेष रूप से इसका अनुरोध किया हो। बिना मांगे लिंक साझा करने से बचें।",
+                    "नियम 9: किसी भी सदस्य को व्यक्तिगत संदेश भेजना मना है। यदि आप किसी से संपर्क करना चाहते हैं, तो पहले ग्रुप में उनकी सहमति लें। यदि आप बिना अनुमति के किसी उपयोगकर्ता को उनकी व्यक्तिगत चैट पर संपर्क करते हैं और वह उपयोगकर्ता एडमिन से शिकायत करता है, तो आपको बिना किसी सूचना के ग्रुप से हटा दिया जाएगा।"
+                ]
+            };
+
+            const LANG_NAMES = ['english', 'urdu', 'hindi'];
+            let currentLang = 'english';
+
+            // ============================================================
+            //  2. DOM REFERENCES
+            // ============================================================
+            const mainInterface = document.getElementById('mainInterface');
+            const communitySection = document.getElementById('communitySection');
+            const rulesContainer = document.getElementById('rules-container');
+            const switchLangBtn = document.getElementById('switchLangBtn');
+            const joinGroupBtn = document.getElementById('joinGroupBtn');
+            const modal = document.getElementById('groupModal');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const announcer = document.getElementById('announcer');
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = document.getElementById('themeIcon');
+
+            // Menu
+            const menuBtn = document.getElementById('menuBtn');
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            const menuJoinCommunity = document.getElementById('menuJoinCommunity');
+            const menuReadPdf = document.getElementById('menuReadPdf');
+            const menuReadTxt = document.getElementById('menuReadTxt');
+            const menuReadCfc = document.getElementById('menuReadCfc');
+            const menuApplication = document.getElementById('menuApplication');
+
+            // PDF Reader
+            const pdfOverlay = document.getElementById('pdfReaderOverlay');
+            const modeTabs = document.getElementById('modeTabs');
+            const chooseFileBtn = document.getElementById('chooseFileBtn');
+            const fileInput = document.getElementById('fileInput');
+            const readFileBtn = document.getElementById('readFileBtn');
+            const stopFileBtn = document.getElementById('stopFileBtn');
+            const pdfStatus = document.getElementById('pdfStatus');
+            const closePdfBtn = document.getElementById('closePdfBtn');
+
+            // Application Download
+            const appOverlay = document.getElementById('appDownloadOverlay');
+            const downloadAppBtn = document.getElementById('downloadAppBtn');
+            const closeAppBtn = document.getElementById('closeAppBtn');
+
+            let isModalOpen = false;
+            let fileContent = '';
+            let isReading = false;
+            let speechUtterance = null;
+            let currentFileName = '';
+            let currentMode = 'pdf'; // 'pdf' | 'txt' | 'cfc'
+
+            // ============================================================
+            //  3. RENDER RULES
+            // ============================================================
+            function renderRules() {
+                const rules = RULES[currentLang];
+                if (!rules) return;
+                const fragment = document.createDocumentFragment();
+                rules.forEach(text => {
+                    const card = document.createElement('div');
+                    card.className = 'rule-card';
+                    card.textContent = text;
+                    fragment.appendChild(card);
+                });
+                rulesContainer.innerHTML = '';
+                rulesContainer.appendChild(fragment);
+            }
+
+            // ============================================================
+            //  4. LANGUAGE SWITCH
+            // ============================================================
+            function switchLanguage() {
+                const idx = LANG_NAMES.indexOf(currentLang);
+                const next = (idx + 1) % LANG_NAMES.length;
+                currentLang = LANG_NAMES[next];
+                renderRules();
+                announcer.textContent = 'Language changed.';
+            }
+
+            // ============================================================
+            //  5. MODAL (Join Group)
+            // ============================================================
+            function openModal() {
+                if (isModalOpen) return;
+                isModalOpen = true;
+                modal.setAttribute('aria-hidden', 'false');
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+                const firstBtn = modal.querySelector('button');
+                if (firstBtn) setTimeout(() => firstBtn.focus(), 50);
+                announcer.textContent = 'Join group dialog opened.';
+            }
+
+            function closeModal() {
+                if (!isModalOpen) return;
+                isModalOpen = false;
+                modal.setAttribute('aria-hidden', 'true');
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                announcer.textContent = 'Dialog closed.';
+            }
+
+            function toggleModal() {
+                isModalOpen ? closeModal() : openModal();
+            }
+
+            // ============================================================
+            //  6. THEME TOGGLE
+            // ============================================================
+            function toggleTheme() {
+                document.body.classList.toggle('dark');
+                const isDark = document.body.classList.contains('dark');
+                themeIcon.textContent = isDark ? '\u2600' : '\u263E';
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+                announcer.textContent = isDark ? 'Dark theme enabled' : 'Light theme enabled';
+            }
+
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark');
+                themeIcon.textContent = '\u2600';
+            }
+
+            // ============================================================
+            //  7. SHOW COMMUNITY (from menu)
+            // ============================================================
+            function showCommunity() {
+                closeMenu();
+                mainInterface.classList.add('hidden');
+                communitySection.classList.add('visible');
+                communitySection.style.display = 'block';
+                renderRules();
+                announcer.textContent = 'Community guidelines loaded.';
+                const firstRule = document.querySelector('.rule-card');
+                if (firstRule) firstRule.focus();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            // ============================================================
+            //  8. MENU DROPDOWN
+            // ============================================================
+            let isMenuOpen = false;
+
+            function toggleMenu() {
+                isMenuOpen = !isMenuOpen;
+                dropdownMenu.classList.toggle('open', isMenuOpen);
+                menuBtn.setAttribute('aria-expanded', isMenuOpen);
+                if (isMenuOpen) {
+                    const firstItem = dropdownMenu.querySelector('button');
+                    if (firstItem) setTimeout(() => firstItem.focus(), 50);
+                }
+            }
+
+            function closeMenu() {
+                isMenuOpen = false;
+                dropdownMenu.classList.remove('open');
+                menuBtn.setAttribute('aria-expanded', 'false');
+            }
+
+            // ============================================================
+            //  9. APPLICATION DOWNLOAD
+            // ============================================================
+            function openAppDownload() {
+                closeMenu();
+                appOverlay.classList.add('open');
+                appOverlay.style.display = 'flex';
+                setTimeout(() => downloadAppBtn.focus(), 50);
+                announcer.textContent = 'Application download dialog opened.';
+            }
+
+            function closeAppDownload() {
+                appOverlay.classList.remove('open');
+                appOverlay.style.display = 'none';
+                announcer.textContent = 'Application dialog closed.';
+                menuBtn.focus();
+            }
+
+            function downloadApplication() {
+                // Direct download link
+                const link = document.createElement('a');
+                link.href = 'https://github.com/user-attachments/files/29581886/Multilingual.TTS.zip';
+                link.download = 'Multilingual.TTS.zip';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                announcer.textContent = 'Download started.';
+            }
+
+            // ============================================================
+            //  10. PDF READER - MODE MANAGEMENT
+            // ============================================================
+            function setMode(mode) {
+                currentMode = mode;
+                // Update tabs
+                const tabs = modeTabs.querySelectorAll('button');
+                tabs.forEach(tab => {
+                    const tabMode = tab.getAttribute('data-mode');
+                    const isActive = tabMode === mode;
+                    tab.classList.toggle('active', isActive);
+                    tab.setAttribute('aria-selected', isActive);
+                });
+
+                // Update button text and accept attribute
+                const modeNames = {
+                    pdf: 'PDF',
+                    txt: 'TXT',
+                    cfc: 'CFC'
+                };
+                chooseFileBtn.textContent = 'Choose ' + modeNames[mode];
+                fileInput.accept = mode === 'pdf' ? '.pdf' : '.txt,.cfc';
+
+                // Reset state
+                fileContent = '';
+                currentFileName = '';
+                pdfStatus.textContent = 'No ' + modeNames[mode] + ' file loaded.';
+                readFileBtn.disabled = true;
+                stopFileBtn.disabled = true;
+                readFileBtn.textContent = 'Read';
+                if (speechUtterance) {
+                    window.speechSynthesis.cancel();
+                    speechUtterance = null;
+                    isReading = false;
+                }
+            }
+
+            // ============================================================
+            //  11. PDF READER - OPEN / CLOSE
+            // ============================================================
+            function openPdfReader(mode) {
+                closeMenu();
+                setMode(mode || 'pdf');
+                pdfOverlay.classList.add('open');
+                pdfOverlay.style.display = 'flex';
+                setTimeout(() => chooseFileBtn.focus(), 50);
+                announcer.textContent = 'Reader opened. Choose a file.';
+            }
+
+            function closePdfReader() {
+                if (speechUtterance) {
+                    window.speechSynthesis.cancel();
+                    speechUtterance = null;
+                    isReading = false;
+                }
+                pdfOverlay.classList.remove('open');
+                pdfOverlay.style.display = 'none';
+                announcer.textContent = 'Reader closed.';
+                menuBtn.focus();
+            }
+
+            // ============================================================
+            //  12. FILE HANDLING
+            // ============================================================
+            function chooseFile() {
+                fileInput.click();
+            }
+
+            function handleFile(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+                currentFileName = file.name;
+                pdfStatus.textContent = 'Loading "' + currentFileName + '" ...';
+                readFileBtn.disabled = true;
+                stopFileBtn.disabled = true;
+
+                const reader = new FileReader();
+
+                if (currentMode === 'pdf') {
+                    // Use PDF.js
+                    reader.onload = function(e) {
+                        const arrayBuffer = e.target.result;
+                        pdfjsLib.getDocument({ data: arrayBuffer }).promise
+                            .then(function(pdf) {
+                                const numPages = pdf.numPages;
+                                const pagePromises = [];
+                                for (let i = 1; i <= numPages; i++) {
+                                    pagePromises.push(pdf.getPage(i).then(function(page) {
+                                        return page.getTextContent().then(function(textContent) {
+                                            return textContent.items.map(item => item.str).join(' ');
+                                        });
+                                    }));
+                                }
+                                return Promise.all(pagePromises);
+                            })
+                            .then(function(pagesText) {
+                                fileContent = pagesText.join('\n\n');
+                                if (fileContent.trim().length === 0) {
+                                    pdfStatus.textContent = 'No readable text found in "' + currentFileName +
+                                        '".';
+                                    readFileBtn.disabled = true;
+                                } else {
+                                    const wordCount = fileContent.split(/\s+/).length;
+                                    pdfStatus.textContent = 'Loaded "' + currentFileName + '" (' + wordCount +
+                                        ' words). Press Read to listen.';
+                                    readFileBtn.disabled = false;
+                                    stopFileBtn.disabled = true;
+                                    announcer.textContent = 'File loaded successfully.';
+                                }
+                            })
+                            .catch(function(err) {
+                                console.error('PDF error:', err);
+                                pdfStatus.textContent = 'Error reading PDF: ' + err.message;
+                                readFileBtn.disabled = true;
+                            });
+                    };
+                    reader.readAsArrayBuffer(file);
+                } else {
+                    // TXT or CFC - read as text
+                    reader.onload = function(e) {
+                        fileContent = e.target.result;
+                        if (fileContent.trim().length === 0) {
+                            pdfStatus.textContent = 'File "' + currentFileName + '" is empty.';
+                            readFileBtn.disabled = true;
+                        } else {
+                            const wordCount = fileContent.split(/\s+/).length;
+                            pdfStatus.textContent = 'Loaded "' + currentFileName + '" (' + wordCount +
+                                ' words). Press Read to listen.';
+                            readFileBtn.disabled = false;
+                            stopFileBtn.disabled = true;
+                            announcer.textContent = 'File loaded successfully.';
+                        }
+                    };
+                    reader.onerror = function() {
+                        pdfStatus.textContent = 'Error reading file.';
+                        readFileBtn.disabled = true;
+                    };
+                    reader.readAsText(file);
+                }
+                fileInput.value = '';
+            }
+
+            // ============================================================
+            //  13. READ / STOP
+            // ============================================================
+            function readFile() {
+                if (!fileContent || fileContent.trim().length === 0) {
+                    pdfStatus.textContent = 'No text to read. Please load a file first.';
+                    return;
+                }
+                if (isReading) return;
+
+                window.speechSynthesis.cancel();
+
+                const utterance = new SpeechSynthesisUtterance(fileContent);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.9;
+                utterance.pitch = 1;
+                utterance.volume = 1;
+
+                utterance.onstart = function() {
+                    isReading = true;
+                    readFileBtn.textContent = 'Stop';
+                    readFileBtn.disabled = false;
+                    stopFileBtn.disabled = false;
+                    pdfStatus.textContent = 'Reading...';
+                    announcer.textContent = 'Reading started.';
+                };
+
+                utterance.onend = function() {
+                    isReading = false;
+                    readFileBtn.textContent = 'Read';
+                    readFileBtn.disabled = false;
+                    stopFileBtn.disabled = true;
+                    pdfStatus.textContent = 'Reading finished.';
+                    announcer.textContent = 'Reading finished.';
+                    speechUtterance = null;
+                };
+
+                utterance.onerror = function(event) {
+                    if (event.error !== 'canceled') {
+                        console.error('Speech error:', event.error);
+                        pdfStatus.textContent = 'Speech error: ' + event.error;
+                    }
+                    isReading = false;
+                    readFileBtn.textContent = 'Read';
+                    readFileBtn.disabled = false;
+                    stopFileBtn.disabled = true;
+                    speechUtterance = null;
+                };
+
+                speechUtterance = utterance;
+                window.speechSynthesis.speak(utterance);
+            }
+
+            function stopReading() {
+                if (speechUtterance) {
+                    window.speechSynthesis.cancel();
+                    speechUtterance = null;
+                }
+                isReading = false;
+                readFileBtn.textContent = 'Read';
+                readFileBtn.disabled = false;
+                stopFileBtn.disabled = true;
+                pdfStatus.textContent = 'Stopped.';
+                announcer.textContent = 'Reading stopped.';
+            }
+
+            // ============================================================
+            //  14. KEYBOARD TRAPS
+            // ============================================================
+            document.addEventListener('keydown', function(e) {
+                // Modal trap
+                if (isModalOpen) {
+                    if (e.key === 'Escape') {
+                        e.preventDefault();
+                        closeModal();
+                        return;
+                    }
+                    if (e.key === 'Tab') {
+                        const focusable = modal.querySelectorAll(
+                            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+                        if (focusable.length === 0) return;
+                        const first = focusable[0];
+                        const last = focusable[focusable.length - 1];
+                        if (e.shiftKey && document.activeElement === first) {
+                            e.preventDefault();
+                            last.focus();
+                        } else if (!e.shiftKey && document.activeElement === last) {
+                            e.preventDefault();
+                            first.focus();
+                        }
+                    }
+                    return;
+                }
+
+                // PDF overlay trap
+                if (pdfOverlay.classList.contains('open')) {
+                    if (e.key === 'Escape') {
+                        e.preventDefault();
+                        closePdfReader();
+                        return;
+                    }
+                    if (e.key === 'Tab') {
+                        const focusable = pdfOverlay.querySelectorAll(
+                            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+                        if (focusable.length === 0) return;
+                        const first = focusable[0];
+                        const last = focusable[focusable.length - 1];
+                        if (e.shiftKey && document.activeElement === first) {
+                            e.preventDefault();
+                            last.focus();
+                        } else if (!e.shiftKey && document.activeElement === last) {
+                            e.preventDefault();
+                            first.focus();
+                        }
+                    }
+                    return;
+                }
+
+                // App download overlay trap
+                if (appOverlay.classList.contains('open')) {
+                    if (e.key === 'Escape') {
+                        e.preventDefault();
+                        closeAppDownload();
+                        return;
+                    }
+                    if (e.key === 'Tab') {
+                        const focusable = appOverlay.querySelectorAll(
+                            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+                        if (focusable.length === 0) return;
+                        const first = focusable[0];
+                        const last = focusable[focusable.length - 1];
+                        if (e.shiftKey && document.activeElement === first) {
+                            e.preventDefault();
+                            last.focus();
+                        } else if (!e.shiftKey && document.activeElement === last) {
+                            e.preventDefault();
+                            first.focus();
+                        }
+                    }
+                    return;
+                }
+
+                // Close menu on Escape
+                if (e.key === 'Escape' && isMenuOpen) {
+                    closeMenu();
+                    menuBtn.focus();
+                }
+            });
+
+            // Backdrop clicks
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) closeModal();
+            });
+            pdfOverlay.addEventListener('click', function(e) {
+                if (e.target === pdfOverlay) closePdfReader();
+            });
+            appOverlay.addEventListener('click', function(e) {
+                if (e.target === appOverlay) closeAppDownload();
+            });
+
+            // Close menu on outside click
+            document.addEventListener('click', function(e) {
+                if (isMenuOpen && !dropdownMenu.contains(e.target) && e.target !== menuBtn) {
+                    closeMenu();
+                }
+            });
+
+            // ============================================================
+            //  15. EVENT BINDING
+            // ============================================================
+
+            // Menu
+            menuBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                toggleMenu();
+            });
+
+            menuJoinCommunity.addEventListener('click', showCommunity);
+
+            menuReadPdf.addEventListener('click', function() {
+                openPdfReader('pdf');
+            });
+
+            menuReadTxt.addEventListener('click', function() {
+                openPdfReader('txt');
+            });
+
+            menuReadCfc.addEventListener('click', function() {
+                openPdfReader('cfc');
+            });
+
+            menuApplication.addEventListener('click', openAppDownload);
+
+            // Community controls
+            switchLangBtn.addEventListener('click', switchLanguage);
+            joinGroupBtn.addEventListener('click', toggleModal);
+            closeModalBtn.addEventListener('click', closeModal);
+
+            // Theme
+            themeToggle.addEventListener('click', toggleTheme);
+
+            // Mode tabs
+            modeTabs.addEventListener('click', function(e) {
+                const tab = e.target.closest('button');
+                if (!tab) return;
+                const mode = tab.getAttribute('data-mode');
+                if (mode && mode !== currentMode) {
+                    setMode(mode);
+                    announcer.textContent = 'Switched to ' + mode.toUpperCase() + ' mode.';
+                }
+            });
+
+            // PDF controls
+            chooseFileBtn.addEventListener('click', chooseFile);
+            fileInput.addEventListener('change', handleFile);
+            readFileBtn.addEventListener('click', function() {
+                if (isReading) {
+                    stopReading();
+                } else {
+                    readFile();
+                }
+            });
+            stopFileBtn.addEventListener('click', stopReading);
+            closePdfBtn.addEventListener('click', closePdfReader);
+
+            // App download controls
+            downloadAppBtn.addEventListener('click', downloadApplication);
+            closeAppBtn.addEventListener('click', closeAppDownload);
+
+            // ============================================================
+            //  16. INIT
+            // ============================================================
+            communitySection.style.display = 'none';
+            renderRules();
+            pdfOverlay.style.display = 'none';
+            pdfOverlay.classList.remove('open');
+            appOverlay.style.display = 'none';
+            appOverlay.classList.remove('open');
+
+            console.log('Tech For V I — All features ready.');
+        })();
+    </script>
+</body>
+</html>
