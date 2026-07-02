@@ -3,814 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tech for VI - Visual Assistant (Standalone)</title>
+    <title>Tech For V I</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            background: #000;
-            color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            padding: 20px;
-            line-height: 1.6;
-            max-width: 800px;
-            margin: auto;
-        }
-        h1 {
-            color: #facc15;
-            font-size: 2.5rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-align: center;
-        }
-        .subtitle {
-            text-align: center;
-            color: #ccc;
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
-        .btn, select, input[type="file"], input[type="text"] {
-            width: 100%;
-            padding: 18px;
-            margin: 10px 0;
-            font-size: 1.2rem;
-            font-weight: bold;
-            border: 3px solid #fff;
-            border-radius: 16px;
-            cursor: pointer;
-            transition: all 0.2s;
-            background: #1a1a1a;
-            color: white;
-        }
-        .btn:active {
-            transform: scale(0.97);
-        }
-        .btn-yellow {
-            background: #facc15;
-            color: #000;
-            border-color: #facc15;
-        }
-        .btn-yellow:hover {
-            background: #fde047;
-        }
-        .btn-red {
-            background: #dc2626;
-            color: white;
-            border-color: #dc2626;
-        }
-        .btn-red:hover {
-            background: #b91c1c;
-        }
-        .btn-green {
-            background: #22c55e;
-            color: black;
-            border-color: #22c55e;
-        }
-        .btn-green:hover {
-            background: #16a34a;
-        }
-        .btn-teal {
-            background: #0d9488;
-            color: white;
-            border-color: #0d9488;
-        }
-        .btn-teal:hover {
-            background: #0f766e;
-        }
-        .btn-purple {
-            background: #8b5cf6;
-            color: white;
-            border-color: #8b5cf6;
-        }
-        .btn-purple:hover {
-            background: #7c3aed;
-        }
-        .btn-outline {
-            background: transparent;
-            border: 3px solid #333;
-            color: white;
-        }
-        .btn-outline:hover {
-            background: #222;
-        }
-        .btn:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-            transform: none;
-        }
-        select {
-            appearance: none;
-            background: #1a1a1a url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23facc15' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") no-repeat right 20px center;
-            background-size: 20px;
-            padding-right: 50px;
-        }
-        select option {
-            background: #000;
-            color: white;
-        }
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-        @media (max-width: 600px) {
-            .grid-2 {
-                grid-template-columns: 1fr;
-            }
-        }
-        .card {
-            background: #111;
-            border: 3px solid #222;
-            border-radius: 24px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-        .card-title {
-            font-size: 1.2rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            color: #facc15;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #333;
-            padding-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .output-box {
-            background: #0a0a0a;
-            border: 3px solid #333;
-            border-radius: 16px;
-            padding: 20px;
-            min-height: 120px;
-            font-size: 1.4rem;
-            font-weight: bold;
-            word-wrap: break-word;
-            color: white;
-            margin: 15px 0;
-        }
-        .output-box .placeholder {
-            color: #555;
-        }
-        .flex-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .flex-row .btn {
-            flex: 1;
-            min-width: 120px;
-        }
-        video {
-            width: 100%;
-            border-radius: 16px;
-            background: #000;
-            border: 2px solid #facc15;
-            margin: 10px 0;
-        }
-        .hidden {
-            display: none;
-        }
-        .status-badge {
-            display: inline-block;
-            padding: 6px 16px;
-            border-radius: 30px;
-            font-weight: bold;
-            background: #dc2626;
-            color: white;
-        }
-        .status-badge.active {
-            background: #22c55e;
-        }
-        .sound-bars {
-            display: flex;
-            align-items: flex-end;
-            gap: 4px;
-            height: 40px;
-            margin: 10px auto;
-        }
-        .sound-bar {
-            width: 8px;
-            background: #facc15;
-            border-radius: 4px;
-            animation: pulse 1s ease-in-out infinite;
-        }
-        .sound-bar:nth-child(2) { height: 40px; animation-delay: 0.1s; }
-        .sound-bar:nth-child(3) { height: 20px; animation-delay: 0.2s; }
-        .sound-bar:nth-child(4) { height: 30px; animation-delay: 0.3s; }
-        .sound-bar:nth-child(5) { height: 15px; animation-delay: 0.4s; }
-        @keyframes pulse {
-            0%, 100% { transform: scaleY(0.4); }
-            50% { transform: scaleY(1.2); }
-        }
-        .text-center {
-            text-align: center;
-        }
-        .mt-2 { margin-top: 15px; }
-        hr {
-            border: 1px solid #222;
-            margin: 20px 0;
-        }
-        .badge {
-            background: #facc15;
-            color: #000;
-            font-weight: 900;
-            padding: 4px 12px;
-            border-radius: 30px;
-            font-size: 0.8rem;
-        }
+        body { font-family: Arial, sans-serif; padding: 20px; line-height: 1.6; }
+        .heading { text-align: center; font-size: 24px; font-weight: bold; margin-bottom: 20px; }
+        #rules-container { margin-bottom: 30px; white-space: pre-line; }
+        .controls { position: fixed; bottom: 10px; left: 0; width: 100%; display: flex; justify-content: center; gap: 10px; background: #fff; padding: 10px; }
+        button { padding: 10px 20px; cursor: pointer; }
+        
+        /* Modal Styles */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
+        .modal-content { background: white; margin: 10% auto; padding: 20px; width: 80%; max-width: 500px; border-radius: 10px; }
     </style>
 </head>
 <body>
 
-    <h1>🔍 Tech for VI</h1>
-    <p class="subtitle">Visual Assistant for Blind &amp; Visually Impaired — by Muhammad Hanzla</p>
+    <div class="heading">Welcome to Tech for V I</div>
+    <div id="rules-container"></div>
 
-    <!-- Mode Selector -->
-    <div class="card">
-        <div class="card-title">⚙️ Choose Mode</div>
-        <select id="modeSelect">
-            <option value="normal">Visual Assistant</option>
-            <option value="cash">Cash Reader</option>
-        </select>
+    <div class="controls">
+        <button onclick="switchLanguage()">Switch Language</button>
+        <button onclick="toggleModal()">Join Group</button>
     </div>
 
-    <!-- Action Buttons: Take Photo / Upload -->
-    <div class="grid-2">
-        <button id="takePhotoBtn" class="btn btn-yellow">📸 Take Photo</button>
-        <button id="uploadBtn" class="btn btn-purple">📂 Upload Image</button>
-        <input type="file" id="imageInput" accept="image/*" style="display:none;">
-    </div>
-
-    <!-- Camera Preview (hidden by default) -->
-    <div id="cameraPreview" class="hidden">
-        <video id="video" autoplay playsinline muted></video>
-        <div class="flex-row">
-            <button id="snapshotBtn" class="btn btn-yellow">⏺️ Take Snapshot</button>
-            <button id="closeCamBtn" class="btn btn-red">✖️ Close Camera</button>
+    <div id="groupModal" class="modal">
+        <div class="modal-content">
+            <h3>Developed by Muhammad Hanzala</h3>
+            <p>If you want to join the male group, click below:</p>
+            <button onclick="window.location.href='https://chat.whatsapp.com/JtUiteJHCbGARylI729svT'">Join Male Group</button>
+            
+            <p>If you want to join the female group, click below:</p>
+            <button onclick="window.location.href='https://chat.whatsapp.com/EZhMNcxZs8GKd78iMNxMDC'">Join Female Group</button>
+            
+            <p>If you are not from Pakistan or India, join the International group:</p>
+            <button onclick="window.location.href='https://chat.whatsapp.com/FDQxGVfsjuTBKBaYxzw3s2'">Join International Group</button>
+            
+            <p>If you are a coder, join our Coding Lab:</p>
+            <button onclick="window.location.href='https://chat.whatsapp.com/BcbwAqoM9PuJEYSMxXTBrC'">Join Coding Group</button>
+            
+            <p>If you like playing games, join our Gaming group:</p>
+            <button onclick="window.location.href='https://chat.whatsapp.com/D6uukm3O593ATI8HZfqKBU'">Join Gaming Group</button>
+            
+            <br><br><button onclick="toggleModal()">Close</button>
         </div>
     </div>
-
-    <!-- Countdown display -->
-    <div id="countdownDisplay" class="text-center hidden" style="font-size: 4rem; font-weight: 900; color: #facc15;">3</div>
-
-    <!-- Analyzing indicator -->
-    <div id="analyzingIndicator" class="hidden">
-        <div class="sound-bars">
-            <div class="sound-bar"></div>
-            <div class="sound-bar"></div>
-            <div class="sound-bar"></div>
-            <div class="sound-bar"></div>
-            <div class="sound-bar"></div>
-        </div>
-        <p class="text-center" style="font-size: 1.5rem; font-weight: bold; color: #facc15;">Analyzing image, please wait...</p>
-    </div>
-
-    <!-- Stop Speech & Copy buttons -->
-    <div class="grid-2">
-        <button id="stopSpeechBtn" class="btn btn-red">🔇 Stop Speech</button>
-        <button id="copyBtn" class="btn btn-teal">📋 Copy Result</button>
-    </div>
-
-    <!-- Settings -->
-    <div class="card">
-        <div class="card-title">🌐 Settings</div>
-        <div class="grid-2">
-            <div>
-                <label style="font-weight:bold; display:block; margin-top:10px;">Target Language</label>
-                <select id="languageSelect">
-                    <option value="ur">Urdu (اردو)</option>
-                    <option value="en">English</option>
-                    <option value="hi">Hindi (हिंदी)</option>
-                    <option value="ar">Arabic (العربية)</option>
-                    <option value="es">Spanish</option>
-                    <option value="fr">French</option>
-                    <option value="de">German</option>
-                    <option value="ja">Japanese</option>
-                </select>
-            </div>
-            <div>
-                <label style="font-weight:bold; display:block; margin-top:10px;">Speech Rate</label>
-                <select id="speedSelect">
-                    <option value="0.5">0.5x (Slow)</option>
-                    <option value="0.75">0.75x</option>
-                    <option value="1" selected>1x (Normal)</option>
-                    <option value="1.25">1.25x</option>
-                    <option value="1.5">1.5x</option>
-                    <option value="1.75">1.75x</option>
-                    <option value="2">2x (Fast)</option>
-                </select>
-            </div>
-        </div>
-        <!-- Cash Country (hidden by default) -->
-        <div id="cashCountryDiv" class="hidden" style="margin-top:10px;">
-            <label style="font-weight:bold; display:block;">Select Currency Country</label>
-            <select id="cashCountrySelect">
-                <option value="Pakistan (PKR)">Pakistan - PKR</option>
-                <option value="India (INR)">India - INR</option>
-                <option value="Saudi Arabia (SAR)">Saudi Arabia - SAR</option>
-                <option value="United States (USD)">United States - USD</option>
-                <option value="United Kingdom (GBP)">United Kingdom - GBP</option>
-                <option value="United Arab Emirates (AED)">UAE - AED</option>
-            </select>
-        </div>
-    </div>
-
-    <!-- About & Support Button -->
-    <button id="aboutBtn" class="btn btn-outline">❓ About &amp; Support</button>
-
-    <!-- About Section (hidden) -->
-    <div id="aboutSection" class="hidden card">
-        <div class="card-title">📢 About & Support</div>
-        <div id="aboutMenu">
-            <button id="configureApiKeyBtn" class="btn btn-yellow">🔑 Configure API Key</button>
-            <button id="whatsappBtn" class="btn btn-green">💬 Join WhatsApp Group</button>
-            <button id="telegramBtn" class="btn" style="background:#0088cc; border-color:#0088cc;">📱 Join Telegram</button>
-            <button id="youtubeBtn" class="btn" style="background:#ff0000; border-color:#ff0000;">▶️ Subscribe YouTube</button>
-            <button id="closeAboutBtn" class="btn btn-outline">✖️ Close</button>
-        </div>
-        <div id="whatsappSubmenu" class="hidden">
-            <button class="btn btn-green" onclick="window.open('https://wa.me/923316809146?text=Hi!%20I%20would%20like%20to%20join%20the%20Tech%20For%20VI%20Male%20Group.','_blank')">👨 JOIN TECH FOR VI MALE</button>
-            <button class="btn btn-green" onclick="window.open('https://wa.me/923316809146?text=Hi!%20I%20would%20like%20to%20join%20the%20Tech%20For%20VI%20Female%20Group.','_blank')">👩 JOIN TECH FOR VI FEMALE</button>
-            <button class="btn btn-green" onclick="window.open('https://wa.me/923316809146?text=Hi!%20I%20would%20like%20to%20join%20the%20Tech%20For%20VI%20International%20Group.','_blank')">🌍 JOIN INTERNATIONAL GROUP</button>
-            <button class="btn btn-green" onclick="window.open('https://wa.me/923316809146?text=Hi!%20I%20would%20like%20to%20join%20the%20Tech%20For%20VI%20Gaming%20Club.','_blank')">🎮 JOIN GAMING CLUB</button>
-            <button class="btn btn-green" onclick="window.open('https://whatsapp.com/channel/0029Vame1yJHltYFSMOiIn3u','_blank')">📢 FOLLOW WHATSAPP CHANNEL</button>
-            <button id="backToAboutMenu" class="btn btn-outline">⬅️ Back</button>
-        </div>
-    </div>
-
-    <!-- Output -->
-    <div class="card">
-        <div class="card-title">📝 Scene Description Output</div>
-        <div id="output" class="output-box">
-            <span class="placeholder">System ready. Please take a photo or upload an image.</span>
-        </div>
-        <!-- Thumbnail (if any) -->
-        <div id="thumbnailContainer" class="hidden" style="margin-top:10px; display:flex; align-items:center; gap:15px;">
-            <img id="thumbnail" src="" alt="Thumbnail" style="width:80px; height:80px; object-fit:cover; border-radius:12px; border:2px solid #facc15;">
-            <span style="font-weight:bold; color:#aaa;">Processed Frame</span>
-        </div>
-    </div>
-
-    <hr>
-    <p style="text-align:center; color:#555; font-size:0.9rem;">© 2025 Tech for VI — All rights reserved.</p>
 
     <script>
-        // ========== DOM refs ==========
-        const takePhotoBtn = document.getElementById('takePhotoBtn');
-        const uploadBtn = document.getElementById('uploadBtn');
-        const imageInput = document.getElementById('imageInput');
-        const cameraPreview = document.getElementById('cameraPreview');
-        const video = document.getElementById('video');
-        const snapshotBtn = document.getElementById('snapshotBtn');
-        const closeCamBtn = document.getElementById('closeCamBtn');
-        const countdownDisplay = document.getElementById('countdownDisplay');
-        const analyzingIndicator = document.getElementById('analyzingIndicator');
-        const stopSpeechBtn = document.getElementById('stopSpeechBtn');
-        const copyBtn = document.getElementById('copyBtn');
-        const languageSelect = document.getElementById('languageSelect');
-        const speedSelect = document.getElementById('speedSelect');
-        const modeSelect = document.getElementById('modeSelect');
-        const cashCountrySelect = document.getElementById('cashCountrySelect');
-        const cashCountryDiv = document.getElementById('cashCountryDiv');
-        const outputDiv = document.getElementById('output');
-        const thumbnailContainer = document.getElementById('thumbnailContainer');
-        const thumbnail = document.getElementById('thumbnail');
-        const aboutBtn = document.getElementById('aboutBtn');
-        const aboutSection = document.getElementById('aboutSection');
-        const aboutMenu = document.getElementById('aboutMenu');
-        const whatsappSubmenu = document.getElementById('whatsappSubmenu');
-        const configureApiKeyBtn = document.getElementById('configureApiKeyBtn');
-        const whatsappBtn = document.getElementById('whatsappBtn');
-        const telegramBtn = document.getElementById('telegramBtn');
-        const youtubeBtn = document.getElementById('youtubeBtn');
-        const closeAboutBtn = document.getElementById('closeAboutBtn');
-        const backToAboutMenu = document.getElementById('backToAboutMenu');
+        const rules = {
+            urdu: `Rule 1: گروپ میں شامل ہونے کے بعد 24 گھنٹوں کے اندر اپنا تعارف کروانا لازمی ہے جس میں آپ کا پورا نام، ملک، شہر اور استعمال ہونے والی ڈیوائس شامل ہو۔ اگر آپ کمپیوٹر استعمال کرتے ہیں، تو اپنے کمپیوٹر کا نام، ونڈوز کا ورژن اور استعمال ہونے والا سکرین ریڈر بھی بتائیں۔
+            Rule 2: کوئی بھی سوال پوچھنے سے پہلے اپنا نام، ڈیوائس کا نام، اور اینڈرائیڈ ورژن بتائیں۔ اگر آپ کا سوال کمپیوٹر کے حوالے سے ہے، تو مینوفیکچرر، ونڈوز ورژن کا ذکر کریں اور بتائیں کہ کمپیوٹر میں کون سا سکرین ریڈر استعمال کر رہے ہیں۔
+            Rule 3: اپنا پیغام واضح رکھیں، سکرین ریڈر کی آواز کم رکھیں، پوائنٹ ٹو پوائنٹ بات کریں، اور گفتگو کو سختی سے سوال تک محدود رکھیں۔ اگر آپ نے کسی ایپلیکیشن کی ڈیمانڈ کرنی ہے، تو اپنے موبائل کا نام اور اینڈرائیڈ ورژن بتانا لازمی ہوگا تاکہ ہم آپ کو اس کے مطابق ایپلیکیشن بھیج سکیں۔ فضول بحث سے گریز کریں۔
+            Rule 4: اگر آپ کو اپنے سوال یا ایپ کی درخواست پر 24 گھنٹے کے اندر جواب نہ ملے، تو آپ اس وقت کے بعد اپنا پیغام دوبارہ بھیج سکتے ہیں۔ تاہم، اگر آپ 24 گھنٹے کے اندر ہی دوبارہ پیغام بھیجیں گے تو آپ کو وارننگ دی جائے گی، اور اگر آپ پھر بھی ایسا کرتے رہے تو آپ کو گروپ سے نکال دیا جائے گا۔
+            Rule 5: ایک دوسرے کے ساتھ احترام سے پیش آئیں، غیر ضروری بحث نہ کریں، اور جب کسی کو جواب دیں تو پہلے ان کا پیغام سلیکٹ کریں تاکہ معلوم ہو کہ یہ ایک جواب ہے۔ صبر سے بات کریں اور کسی بھی قسم کے توہین آمیز الفاظ استعمال کرنے سے گریز کریں۔
+            Rule 6: جب آپ کو جواب مل جائے، تو اس بندے کے پیغام پر (thumbs up) یا (red heart) کا reaction کریں، اور الگ سے شکریہ یا خوش آمدید کہنے کی ضرورت نہیں ہے۔
+            Rule 7: گروپ میں کسی بھی قسم کے آرٹیکلز، سوشل میڈیا لنکس، ایموجیز، آڈیو، غیر متعلقہ ویڈیو یا تصاویر شیئر کرنے کی سخت ممانعت ہے۔ اگر کوئی بھی بندہ ان چیزوں میں سے کچھ بھی بھیجے گا تو اسے بغیر بتائے گروپ سے ریموو کر دیا جائے گا۔
+            Rule 8: گروپ میں کوئی بھی ایپلیکیشن یا ویڈیو کا لنک تبھی شیئر کریں جب کسی رکن نے خاص طور پر اس کی درخواست کی ہو۔ بغیر مانگے لنکس شیئر کرنے سے گریز کریں۔
+            Rule 9: کسی رکن کو ذاتی پیغام بھیجنا منع ہے۔ اگر آپ کسی سے رابطہ کرنا چاہتے ہیں تو پہلے گروپ میں اس کی رضامندی لیں۔ اگر آپ کسی یوزر کی پرسنل چیٹ پر بغیر اجازت رابطہ کریں گے اور اس یوزر نے ایڈمن کو کمپلین کی، تو آپ کو بغیر بتائے گروپ سے ریموو کر دیا جائے گا۔`,
+            
+            english: `Rule 1: It is mandatory to introduce yourself within 24 hours of joining the group, including your full name, country, city, and the device you are using. If you use a computer, mention your computer name, Windows version, and the screen reader you are using.
+            Rule 2: Before asking any question, state your name, device name, and Android version. If your question is about a computer, mention the manufacturer, Windows version, and the screen reader you are using on the computer.
+            Rule 3: Keep your message clear, keep the screen reader volume low, be point-to-point, and strictly limit the conversation to the question. If you are requesting an application, it is mandatory to provide your mobile name and Android version so that we can send you the appropriate application. Avoid unnecessary discussion.
+            Rule 4: If you do not receive a response to your question or app request within 24 hours, you may resend your message after this time. However, if you resend the message within 24 hours, you will be warned, and if you continue to do so, you will be removed from the group.
+            Rule 5: Treat each other with respect, avoid unnecessary arguments, and when replying to someone, first select their message so that it is known as a reply. Speak patiently and avoid using any kind of offensive language.
+            Rule 6: Once you receive an answer, react to that person's message with a (thumbs up) or (red heart); there is no need to say thank you or welcome separately.
+            Rule 7: It is strictly forbidden to share any kind of articles, social media links, emojis, audio, unrelated videos, or images in the group. If anyone sends any of these items, they will be removed from the group without notice.
+            Rule 8: Share an application or video link in the group only when a member has specifically requested it. Avoid sharing links without being asked.
+            Rule 9: Sending personal messages to any member is prohibited. If you want to contact someone, first seek their consent in the group. If you contact a user in their personal chat without permission and that user complains to the admin, you will be removed from the group without notice.`,
 
-        // ========== State ==========
-        let stream = null;
-        let countdownInterval = null;
-        let currentBase64 = null;
-        let isAnalyzing = false;
-        let currentResultText = '';
-
-        // ========== Voices ==========
-        let voices = [];
-
-        function loadVoices() {
-            if (typeof window !== 'undefined' && window.speechSynthesis) {
-                voices = window.speechSynthesis.getVoices();
-            }
-        }
-        loadVoices();
-        if (typeof window !== 'undefined' && window.speechSynthesis) {
-            window.speechSynthesis.onvoiceschanged = loadVoices;
-        }
-
-        // ========== Speech functions ==========
-        function cleanSpeechText(text) {
-            if (!text) return '';
-            let cleaned = text.replace(/[\*_~`#]/g, '');
-            cleaned = cleaned.replace(/^\s*[-*+•]\s*/gm, '');
-            cleaned = cleaned.replace(/\s*[-*+•]\s*/g, ', ');
-            cleaned = cleaned.replace(/[:;]/g, '.');
-            return cleaned.trim();
-        }
-
-        function findBestVoiceForLanguage(langCode) {
-            let matched = voices.find(v => v.lang.split('-')[0].toLowerCase() === langCode);
-            if (!matched && langCode === 'ur') {
-                matched = voices.find(v => v.lang.split('-')[0].toLowerCase() === 'hi');
-            }
-            return matched || null;
-        }
-
-        function speakText(text, langCode, rate) {
-            if (!text || typeof window === 'undefined' || !window.speechSynthesis) return;
-            window.speechSynthesis.cancel();
-            const utterance = new SpeechSynthesisUtterance(cleanSpeechText(text));
-            const voice = findBestVoiceForLanguage(langCode);
-            if (voice) {
-                utterance.voice = voice;
-                utterance.lang = voice.lang;
-            } else {
-                const regional = { ur: 'ur-PK', hi: 'hi-IN', en: 'en-US', ar: 'ar-SA', es: 'es-ES', fr: 'fr-FR', de: 'de-DE',
-                    ja: 'ja-JP' };
-                utterance.lang = regional[langCode] || langCode;
-            }
-            utterance.rate = parseFloat(rate || speedSelect.value);
-            window.speechSynthesis.speak(utterance);
-        }
-
-        function speakEnglish(text) {
-            if (!text || typeof window === 'undefined' || !window.speechSynthesis) return;
-            window.speechSynthesis.cancel();
-            const utterance = new SpeechSynthesisUtterance(cleanSpeechText(text));
-            const engVoice = voices.find(v => v.lang.toLowerCase().startsWith('en')) || null;
-            if (engVoice) {
-                utterance.voice = engVoice;
-                utterance.lang = engVoice.lang;
-            } else {
-                utterance.lang = 'en-US';
-            }
-            utterance.rate = parseFloat(speedSelect.value);
-            window.speechSynthesis.speak(utterance);
-        }
-
-        function stopSpeech() {
-            if (typeof window !== 'undefined' && window.speechSynthesis) {
-                window.speechSynthesis.cancel();
-            }
-        }
-
-        // ========== API Key handling ==========
-        function getApiKey() {
-            return localStorage.getItem('techForViApiKey');
-        }
-
-        function setApiKey(key) {
-            if (key && key.trim() !== '') {
-                localStorage.setItem('techForViApiKey', key.trim());
-                return true;
-            } else {
-                localStorage.removeItem('techForViApiKey');
-                return false;
-            }
-        }
-
-        function promptForApiKey() {
-            const current = getApiKey() || '';
-            const newKey = prompt('Enter your Gemini API Key:', current);
-            if (newKey !== null) {
-                if (newKey.trim() === '') {
-                    setApiKey('');
-                    speakEnglish('API Key removed.');
-                } else {
-                    setApiKey(newKey);
-                    speakEnglish('API Key configured successfully.');
-                }
-                return true;
-            }
-            return false;
-        }
-
-        // ========== Camera functions ==========
-        async function startCamera() {
-            if (isAnalyzing) return;
-            stopCamera();
-            setError(null);
-            outputDiv.innerHTML = '<span class="placeholder">Opening camera...</span>';
-            speakEnglish('please hold your mobile taking picture');
-
-            try {
-                const mediaStream = await navigator.mediaDevices.getUserMedia({
-                    video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } }
-                });
-                stream = mediaStream;
-                video.srcObject = stream;
-                await video.play();
-                cameraPreview.classList.remove('hidden');
-                takePhotoBtn.textContent = '⏹️ Stop Camera';
-
-                // Start countdown
-                let count = 3;
-                countdownDisplay.textContent = count;
-                countdownDisplay.classList.remove('hidden');
-                countdownInterval = setInterval(() => {
-                    count--;
-                    if (count > 0) {
-                        countdownDisplay.textContent = count;
-                    } else {
-                        clearInterval(countdownInterval);
-                        countdownInterval = null;
-                        countdownDisplay.classList.add('hidden');
-                        capturePhoto();
-                    }
-                }, 1000);
-
-            } catch (err) {
-                console.error(err);
-                let msg = 'Unable to access camera. Please check permissions or upload an image.';
-                if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
-                    msg = 'Camera permissions denied. Please grant permission or use Upload Image.';
-                }
-                setError(msg);
-                speakEnglish('Camera access failed.');
-                stopCamera();
-            }
-        }
-
-        function stopCamera() {
-            if (countdownInterval) {
-                clearInterval(countdownInterval);
-                countdownInterval = null;
-            }
-            if (stream) {
-                stream.getTracks().forEach(track => track.stop());
-                stream = null;
-            }
-            video.srcObject = null;
-            cameraPreview.classList.add('hidden');
-            takePhotoBtn.textContent = '📸 Take Photo';
-            countdownDisplay.classList.add('hidden');
-        }
-
-        function capturePhoto() {
-            if (!stream || !video.videoWidth) {
-                setError('No video stream available.');
-                return;
-            }
-            const canvas = document.createElement('canvas');
-            const maxDim = 800;
-            let w = video.videoWidth;
-            let h = video.videoHeight;
-            if (w > maxDim || h > maxDim) {
-                if (w > h) { h = Math.round((h * maxDim) / w);
-                    w = maxDim; } else { w = Math.round((w * maxDim) / h);
-                    h = maxDim; }
-            }
-            canvas.width = w;
-            canvas.height = h;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(video, 0, 0, w, h);
-            const dataUrl = canvas.toDataURL('image/jpeg', 0.65);
-            currentBase64 = dataUrl;
-            stopCamera();
-            // Show thumbnail
-            thumbnail.src = dataUrl;
-            thumbnailContainer.classList.remove('hidden');
-            analyzeImage(dataUrl);
-        }
-
-        // ========== Upload ==========
-        uploadBtn.onclick = () => imageInput.click();
-        imageInput.onchange = (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (ev) => {
-                const dataUrl = ev.target.result;
-                currentBase64 = dataUrl;
-                thumbnail.src = dataUrl;
-                thumbnailContainer.classList.remove('hidden');
-                analyzeImage(dataUrl);
-            };
-            reader.readAsDataURL(file);
-            e.target.value = '';
+            hindi: `नियम 1: ग्रुप में शामिल होने के बाद 24 घंटों के भीतर अपना परिचय देना अनिवार्य है, जिसमें आपका पूरा नाम, देश, शहर और इस्तेमाल होने वाली डिवाइस शामिल हो। यदि आप कंप्यूटर का उपयोग करते हैं, तो अपने कंप्यूटर का नाम, विंडोज संस्करण और उपयोग किए जाने वाले स्क्रीन रीडर का उल्लेख करें।
+            नियम 2: कोई भी प्रश्न पूछने से पहले अपना नाम, डिवाइस का नाम और एंड्रॉइड संस्करण बताएं। यदि आपका प्रश्न कंप्यूटर के बारे में है, तो निर्माता, विंडोज संस्करण और कंप्यूटर पर उपयोग किए जा रहे स्क्रीन रीडर का उल्लेख करें।
+            नियम 3: अपना संदेश स्पष्ट रखें, स्क्रीन रीडर की आवाज़ कम रखें, पॉइंट-टू-पॉइंट बात करें और बातचीत को सख्ती से प्रश्न तक सीमित रखें। यदि आप किसी एप्लिकेशन का अनुरोध कर रहे हैं, तो अपने मोबाइल का नाम और एंड्रॉइड संस्करण प्रदान करना अनिवार्य है ताकि हम आपको उपयुक्त एप्लिकेशन भेज सकें। अनावश्यक चर्चा से बचें।
+            नियम 4: यदि आपको 24 घंटों के भीतर अपने प्रश्न या ऐप अनुरोध का उत्तर नहीं मिलता है, तो आप इस समय के बाद अपना संदेश दोबारा भेज सकते हैं। हालाँकि, यदि आप 24 घंटों के भीतर संदेश दोबारा भेजते हैं, तो आपको चेतावनी दी जाएगी, और यदि आप ऐसा करना जारी रखते हैं, तो आपको ग्रुप से निकाल दिया जाएगा।
+            नियम 5: एक-दूसरे के साथ सम्मान से पेश आएं, अनावश्यक बहस न करें, और जब किसी को उत्तर दें तो पहले उनका संदेश चुनें ताकि यह एक उत्तर के रूप में जाना जाए। धैर्य से बोलें और किसी भी प्रकार की अपमानजनक भाषा का प्रयोग करने से बचें।
+            नियम 6: एक बार जब आपको उत्तर मिल जाए, तो उस व्यक्ति के संदेश पर (thumbs up) या (red heart) के साथ प्रतिक्रिया करें; अलग से धन्यवाद या स्वागत कहने की आवश्यकता नहीं है।
+            नियम 7: ग्रुप में किसी भी प्रकार के लेख, सोशल मीडिया लिंक, इमोजी, ऑडियो, असंबंधित वीडियो या चित्र साझा करना सख्त मना है। यदि कोई भी इनमें से कोई भी वस्तु भेजता है, तो उसे बिना किसी सूचना के ग्रुप से हटा दिया जाएगा।
+            नियम 8: ग्रुप में एप्लिकेशन या वीडियो का लिंक तभी साझा करें जब किसी सदस्य ने विशेष रूप से इसका अनुरोध किया हो। बिना मांगे लिंक साझा करने से बचें।
+            नियम 9: किसी भी सदस्य को व्यक्तिगत संदेश भेजना मना है। यदि आप किसी से संपर्क करना चाहते हैं, तो पहले ग्रुप में उनकी सहमति लें। यदि आप बिना अनुमति के किसी उपयोगकर्ता को उनकी व्यक्तिगत चैट पर संपर्क करते हैं और वह उपयोगकर्ता एडमिन से शिकायत करता है, तो आपको बिना किसी सूचना के ग्रुप से हटा दिया जाएगा।`
         };
 
-        // ========== Analyze with Gemini ==========
-        async function analyzeImage(base64Image) {
-            const apiKey = getApiKey();
-            if (!apiKey) {
-                const ok = promptForApiKey();
-                if (!ok) {
-                    setError('API Key required. Please configure it via About & Support.');
-                    return;
-                }
-                // retry
-                return analyzeImage(base64Image);
-            }
-
-            isAnalyzing = true;
-            analyzingIndicator.classList.remove('hidden');
-            setError(null);
-            outputDiv.innerHTML = '<span style="color: #facc15;">Analyzing...</span>';
-            speakEnglish('analysing please wait');
-
-            const lang = languageSelect.value;
-            const mode = modeSelect.value;
-            const cashCountry = cashCountrySelect.value;
-
-            // Build prompt
-            let prompt = '';
-            if (mode === 'cash') {
-                prompt = `You are a dedicated, precise visual cash reader assistant for blind and visually impaired individuals.
-        You must ONLY identify cash/banknotes or coins belonging to "${cashCountry}".
-        CRITICAL RULES:
-        1. If the image contains a valid banknote or coin from "${cashCountry}", state its value and country clearly. Briefly mention its main color.
-        2. If the image does NOT contain any cash from "${cashCountry}", you must NOT describe background objects. Instead, state exactly: "No cash or banknote from ${cashCountry} could be identified." or equivalent in the target language.
-        3. Keep translation exact.
-        4. Do NOT output markdown symbols.
-        5. Provide the entire response in the selected language: "${getLanguageName(lang)}".`;
-            } else {
-                prompt = `Provide a helpful, friendly, and structured description of this image in ${getLanguageName(lang)}.
-        Guidelines:
-        1. Summarize the main scene in 1-2 sentences.
-        2. List and describe key objects, including their relative locations.
-        3. Call out any readable text or signage.
-        4. Point out safety hazards (steps, wet floor, obstacles, doorways).
-        5. Keep description direct, vivid, and helpful. Do not use markdown symbols. Use natural language.
-        6. Entire response must be in "${getLanguageName(lang)}".`;
-            }
-
-            // Clean base64
-            let cleanBase64 = base64Image;
-            let mimeType = 'image/jpeg';
-            if (base64Image.includes(';base64,')) {
-                const parts = base64Image.split(';base64,');
-                cleanBase64 = parts.pop() || '';
-                const mimePart = parts[0];
-                if (mimePart.startsWith('data:')) {
-                    mimeType = mimePart.substring(5);
-                }
-            }
-
-            try {
-                const response = await fetch(
-                    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
-                    {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            contents: [{
-                                parts: [
-                                    { inlineData: { mimeType, data: cleanBase64 } },
-                                    { text: prompt }
-                                ]
-                            }]
-                        })
-                    }
-                );
-                const data = await response.json();
-                if (!response.ok) {
-                    const errMsg = data.error?.message || 'Gemini API error.';
-                    if (response.status === 403 || response.status === 401) {
-                        setError('Invalid API Key. Please reconfigure.');
-                        localStorage.removeItem('techForViApiKey');
-                        speakEnglish('Invalid API Key.');
-                    } else {
-                        setError(errMsg);
-                        speakEnglish('Analysis failed.');
-                    }
-                    isAnalyzing = false;
-                    analyzingIndicator.classList.add('hidden');
-                    return;
-                }
-                const description = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'No description generated.';
-                currentResultText = description;
-                outputDiv.innerHTML = description;
-                isAnalyzing = false;
-                analyzingIndicator.classList.add('hidden');
-                // Speak in target language
-                speakText(description, lang, speedSelect.value);
-
-            } catch (err) {
-                console.error(err);
-                setError('Network error or invalid response.');
-                speakEnglish('Network error.');
-                isAnalyzing = false;
-                analyzingIndicator.classList.add('hidden');
-            }
+        let currentLang = 'urdu';
+        function displayRules() { document.getElementById('rules-container').innerText = rules[currentLang]; }
+        
+        function switchLanguage() {
+            if (currentLang === 'urdu') currentLang = 'english';
+            else if (currentLang === 'english') currentLang = 'hindi';
+            else currentLang = 'urdu';
+            displayRules();
         }
 
-        function getLanguageName(code) {
-            const map = { ur: 'Urdu', en: 'English', hi: 'Hindi', ar: 'Arabic', es: 'Spanish', fr: 'French', de: 'German',
-                ja: 'Japanese' };
-            return map[code] || 'English';
+        function toggleModal() {
+            const modal = document.getElementById('groupModal');
+            modal.style.display = (modal.style.display === 'block') ? 'none' : 'block';
         }
 
-        function setError(msg) {
-            const errorDiv = document.getElementById('errorDisplay') || (() => {
-                const d = document.createElement('div');
-                d.id = 'errorDisplay';
-                d.style.cssText =
-                    'background:#7f1d1d; color:#fca5a5; border:3px solid #dc2626; border-radius:16px; padding:15px; margin:15px 0; font-weight:bold;';
-                document.querySelector('.card:last-child').before(d);
-                return d;
-            })();
-            errorDiv.textContent = '⚠️ ' + msg;
-            errorDiv.style.display = msg ? 'block' : 'none';
-        }
-
-        // ========== Event Listeners ==========
-        takePhotoBtn.onclick = () => {
-            if (stream) {
-                stopCamera();
-            } else {
-                startCamera();
-            }
-        };
-
-        snapshotBtn.onclick = capturePhoto;
-        closeCamBtn.onclick = stopCamera;
-
-        stopSpeechBtn.onclick = stopSpeech;
-
-        copyBtn.onclick = () => {
-            if (currentResultText) {
-                navigator.clipboard.writeText(currentResultText).then(() => {
-                    speakEnglish('Result copied to clipboard.');
-                }).catch(() => {
-                    alert('Result copied to clipboard:\n\n' + currentResultText);
-                });
-            } else {
-                speakEnglish('No result to copy.');
-            }
-        };
-
-        // Mode switch
-        modeSelect.onchange = () => {
-            const mode = modeSelect.value;
-            cashCountryDiv.classList.toggle('hidden', mode !== 'cash');
-            if (mode === 'cash') {
-                speakEnglish('Cash Reader mode selected.');
-            } else {
-                speakEnglish('Visual Assistant mode selected.');
-            }
-        };
-        // Trigger initial
-        modeSelect.dispatchEvent(new Event('change'));
-
-        // About & Support
-        aboutBtn.onclick = () => {
-            aboutSection.classList.toggle('hidden');
-            aboutMenu.classList.remove('hidden');
-            whatsappSubmenu.classList.add('hidden');
-            if (!aboutSection.classList.contains('hidden')) {
-                speakEnglish('About and support screen opened.');
-            }
-        };
-        closeAboutBtn.onclick = () => {
-            aboutSection.classList.add('hidden');
-            speakEnglish('Closed about screen.');
-        };
-        configureApiKeyBtn.onclick = () => {
-            promptForApiKey();
-        };
-        whatsappBtn.onclick = () => {
-            aboutMenu.classList.add('hidden');
-            whatsappSubmenu.classList.remove('hidden');
-            speakEnglish('WhatsApp group options.');
-        };
-        backToAboutMenu.onclick = () => {
-            aboutMenu.classList.remove('hidden');
-            whatsappSubmenu.classList.add('hidden');
-            speakEnglish('Back to about menu.');
-        };
-        telegramBtn.onclick = () => {
-            speakEnglish('Opening Telegram.');
-            window.open('https://t.me/TechForVI', '_blank');
-        };
-        youtubeBtn.onclick = () => {
-            speakEnglish('Opening YouTube.');
-            window.open('https://youtube.com/@techforvi', '_blank');
-        };
-
-        // ========== Initialization ==========
-        // If API key is already set, announce
-        if (getApiKey()) {
-            setTimeout(() => speakEnglish('System ready. Please take a photo or upload an image.'), 1000);
-        } else {
-            setTimeout(() => speakEnglish('Please configure your API key in About and Support.'), 1500);
-        }
+        displayRules();
     </script>
-
 </body>
 </html>
