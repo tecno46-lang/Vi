@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech For V I</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; line-height: 1.6; }
+        .heading { text-align: center; font-size: 24px; font-weight: bold; margin-bottom: 20px; }
+        .rule { margin-bottom: 15px; display: block; }
+        .controls { position: fixed; bottom: 10px; left: 0; width: 100%; display: flex; justify-content: center; gap: 10px; background: #fff; padding: 10px; }
+        button { padding: 10px 20px; cursor: pointer; }
+        
+        /* Modal Styles - Full Screen */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 1000; overflow-y: auto; padding: 20px; }
+        .modal-content { max-width: 600px; margin: auto; }
+    </style>
+</head>
+<body>
+
+    <div class="heading">Welcome to Tech for V I</div>
+    <div id="rules-container"></div>
+
+    <div class="controls">
+        <button onclick="switchLanguage()">Switch Language</button>
+        <button onclick="toggleModal()">Join Group</button>
+    </div>
+
+    <!-- Full Screen Modal -->
+    <div id="groupModal" class="modal">
+        <div class="modal-content">
+            <h3>Developed by Muhammad Hanzala</h3>
+            
+            <p>If you are a male and you are from India or Pakistan, you can join this group:</p>
+            <button onclick="window.location.href='https://chat.whatsapp.com/JtUiteJHCbGARylI729svT'">Join Male Group</button>
+            
+            <p>If you are a female and you are from Pakistan or India, you can join this group:</p>
+            <button onclick="window.location.href='https://chat.whatsapp.com/EZhMNcxZs8GKd78iMNxMDC'">Join Female Group</button>
+            
+            <p>If you are not from Pakistan or India and want to join our group, this group is for you:</p>
+            <button onclick="window.location.href='https://chat.whatsapp.com/FDQxGVfsjuTBKBaYxzw3s2'">Join International Group</button>
+            
+            <p>If you have an interest in coding and belong to any country, you can join our group:</p>
+            <button onclick="window.location.href='https://chat.whatsapp.com/BcbwAqoM9PuJEYSMxXTBrC'">Join Coding Group</button>
+            
+            <p>If you play any games like Hand Cricket or board games, you can join our gaming group and play with your friends:</p>
+            <button onclick="window.location.href='https://chat.whatsapp.com/D6uukm3O593ATI8HZfqKBU'">Join Gaming Group</button>
+            
+            <br><br><button onclick="toggleModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        const rules = {
+            english: [
+                "Rule 1: It is mandatory to introduce yourself within 24 hours of joining the group, including your full name, country, city, and the device you are using. If you use a computer, mention your computer name, Windows version, and the screen reader you are using.",
+                "Rule 2: Before asking any question, state your name, device name, and Android version. If your question is about a computer, mention the manufacturer, Windows version, and the screen reader you are using on the computer.",
+                "Rule 3: Keep your message clear, keep the screen reader volume low, be point-to-point, and strictly limit the conversation to the question. If you are requesting an application, it is mandatory to provide your mobile name and Android version so that we can send you the appropriate application. Avoid unnecessary discussion.",
+                "Rule 4: If you do not receive a response to your question or app request within 24 hours, you may resend your message after this time. However, if you resend the message within 24 hours, you will be warned, and if you continue to do so, you will be removed from the group.",
+                "Rule 5: Treat each other with respect, avoid unnecessary arguments, and when replying to someone, first select their message so that it is known as a reply. Speak patiently and avoid using any kind of offensive language.",
+                "Rule 6: Once you receive an answer, react to that person's message with a (thumbs up) or (red heart); there is no need to say thank you or welcome separately.",
+                "Rule 7: It is strictly forbidden to share any kind of articles, social media links, emojis, audio, unrelated videos, or images in the group. If anyone sends any of these items, they will be removed from the group without notice.",
+                "Rule 8: Share an application or video link in the group only when a member has specifically requested it. Avoid sharing links without being asked.",
+                "Rule 9: Sending personal messages to any member is prohibited. If you want to contact someone, first seek their consent in the group. If you contact a user in their personal chat without permission and that user complains to the admin, you will be removed from the group without notice."
+            ],
+            urdu: [
+                "Rule 1: گروپ میں شامل ہونے کے بعد 24 گھنٹوں کے اندر اپنا تعارف کروانا لازمی ہے جس میں آپ کا پورا نام، ملک، شہر اور استعمال ہونے والی ڈیوائس شامل ہو۔ اگر آپ کمپیوٹر استعمال کرتے ہیں، تو اپنے کمپیوٹر کا نام، ونڈوز کا ورژن اور استعمال ہونے والا سکرین ریڈر بھی بتائیں۔",
+                "Rule 2: کوئی بھی سوال پوچھنے سے پہلے اپنا نام، ڈیوائس کا نام، اور اینڈرائیڈ ورژن بتائیں۔ اگر آپ کا سوال کمپیوٹر کے حوالے سے ہے، تو مینوفیکچرر، ونڈوز ورژن کا ذکر کریں اور بتائیں کہ کمپیوٹر میں کون سا سکرین ریڈر استعمال کر رہے ہیں۔",
+                "Rule 3: اپنا پیغام واضح رکھیں، سکرین ریڈر کی آواز کم رکھیں، پوائنٹ ٹو پوائنٹ بات کریں، اور گفتگو کو سختی سے سوال تک محدود رکھیں۔ اگر آپ نے کسی ایپلیکیشن کی ڈیمانڈ کرنی ہے، تو اپنے موبائل کا نام اور اینڈرائیڈ ورژن بتانا لازمی ہوگا تاکہ ہم آپ کو اس کے مطابق ایپلیکیشن بھیج سکیں۔ فضول بحث سے گریز کریں۔",
+                "Rule 4: اگر آپ کو اپنے سوال یا ایپ کی درخواست پر 24 گھنٹے کے اندر جواب نہ ملے، تو آپ اس وقت کے بعد اپنا پیغام دوبارہ بھیج سکتے ہیں۔ تاہم، اگر آپ 24 گھنٹے کے اندر ہی دوبارہ پیغام بھیجیں گے تو آپ کو وارننگ دی جائے گی، اور اگر آپ پھر بھی ایسا کرتے رہے تو آپ کو گروپ سے نکال دیا جائے گا۔",
+                "Rule 5: ایک دوسرے کے ساتھ احترام سے پیش آئیں، غیر ضروری بحث نہ کریں، اور جب کسی کو جواب دیں تو پہلے ان کا پیغام سلیکٹ کریں تاکہ معلوم ہو کہ یہ ایک جواب ہے۔ صبر سے بات کریں اور کسی بھی قسم کے توہین آمیز الفاظ استعمال کرنے سے گریز کریں۔",
+                "Rule 6: جب آپ کو جواب مل جائے، تو اس بندے کے پیغام پر (thumbs up) یا (red heart) کا reaction کریں، اور الگ سے شکریہ یا خوش آمدید کہنے کی ضرورت نہیں ہے۔",
+                "Rule 7: گروپ میں کسی بھی قسم کے آرٹیکلز، سوشل میڈیا لنکس، ایموجیز، آڈیو، غیر متعلقہ ویڈیو یا تصاویر شیئر کرنے کی سخت ممانعت ہے۔ اگر کوئی بھی بندہ ان چیزوں میں سے کچھ بھی بھیجے گا تو اسے بغیر بتائے گروپ سے ریموو کر دیا جائے گا۔",
+                "Rule 8: گروپ میں کوئی بھی ایپلیکیشن یا ویڈیو کا لنک تبھی شیئر کریں جب کسی رکن نے خاص طور پر اس کی درخواست کی ہو۔ بغیر مانگے لنکس شیئر کرنے سے گریز کریں۔",
+                "Rule 9: کسی رکن کو ذاتی پیغام بھیجنا منع ہے۔ اگر آپ کسی سے رابطہ کرنا چاہتے ہیں تو پہلے گروپ میں اس کی رضامندی لیں۔ اگر آپ کسی یوزر کی پرسنل چیٹ پر بغیر اجازت رابطہ کریں گے اور اس یوزر نے ایڈمن کو کمپلین کی، تو آپ کو بغیر بتائے گروپ سے ریموو کر دیا جائے گا۔"
+            ],
+            hindi: [
+                "नियम 1: ग्रुप में शामिल होने के बाद 24 घंटों के भीतर अपना परिचय देना अनिवार्य है, जिसमें आपका पूरा नाम, देश, शहर और इस्तेमाल होने वाली डिवाइस शामिल हो। यदि आप कंप्यूटर का उपयोग करते हैं, तो अपने कंप्यूटर का नाम, विंडोज संस्करण और उपयोग किए जाने वाले स्क्रीन रीडर का उल्लेख करें।",
+                "नियम 2: कोई भी प्रश्न पूछने से पहले अपना नाम, डिवाइस का नाम और एंड्रॉइड संस्करण बताएं। यदि आपका प्रश्न कंप्यूटर के बारे में है, तो निर्माता, विंडोज संस्करण और कंप्यूटर पर उपयोग किए जा रहे स्क्रीन रीडर का उल्लेख करें।",
+                "नियम 3: अपना संदेश स्पष्ट रखें, स्क्रीन रीडर की आवाज़ कम रखें, पॉइंट-टू-पॉइंट बात करें और बातचीत को सख्ती से प्रश्न तक सीमित रखें। यदि आप किसी एप्लिकेशन का अनुरोध कर रहे हैं, तो अपने मोबाइल का नाम और एंड्रॉइड संस्करण प्रदान करना अनिवार्य है ताकि हम आपको उपयुक्त एप्लिकेशन भेज सकें। अनावश्यक चर्चा से बचें।",
+                "नियम 4: यदि आपको 24 घंटों के भीतर अपने प्रश्न या ऐप अनुरोध का उत्तर नहीं मिलता है, तो आप इस समय के बाद अपना संदेश दोबारा भेज सकते हैं। हालाँकि, यदि आप 24 घंटों के भीतर संदेश दोबारा भेजते हैं, तो आपको चेतावनी दी जाएगी, और यदि आप ऐसा करना जारी रखते हैं, तो आपको ग्रुप से निकाल दिया जाएगा।",
+                "नियम 5: एक-दूसरे के साथ सम्मान से पेश आएं, अनावश्यक बहस न करें, और जब किसी को उत्तर दें तो पहले उनका संदेश चुनें ताकि यह एक उत्तर के रूप में जाना जाए। धैर्य से बोलें और किसी भी प्रकार की अपमानजनक भाषा का प्रयोग करने से बचें।",
+                "नियम 6: एक बार जब आपको उत्तर मिल जाए, तो उस व्यक्ति के संदेश पर (thumbs up) या (red heart) के साथ प्रतिक्रिया करें; अलग से धन्यवाद या स्वागत कहने की आवश्यकता नहीं है।",
+                "नियम 7: ग्रुप में किसी भी प्रकार के लेख, सोशल मीडिया लिंक, इमोजी, ऑडियो, असंबंधित वीडियो या चित्र साझा करना सख्त मना है। यदि कोई भी इनमें से कोई भी वस्तु भेजता है, तो उसे बिना किसी सूचना के ग्रुप से हटा दिया जाएगा।",
+                "नियम 8: ग्रुप में एप्लिकेशन या वीडियो का लिंक तभी साझा करें जब किसी सदस्य ने विशेष रूप से इसका अनुरोध किया हो। बिना मांगे लिंक साझा करने से बचें।",
+                "नियम 9: किसी भी सदस्य को व्यक्तिगत संदेश भेजना मना है। यदि आप किसी से संपर्क करना चाहते हैं, तो पहले ग्रुप में उनकी सहमति लें। यदि आप बिना अनुमति के किसी उपयोगकर्ता को उनकी व्यक्तिगत चैट पर संपर्क करते हैं और वह उपयोगकर्ता एडमिन से शिकायत करता है, तो आपको बिना किसी सूचना के ग्रुप से हटा दिया जाएगा।"
+            ]
+        };
+
+        let currentLang = 'english'; // Default to English
+        function displayRules() {
+            const container = document.getElementById('rules-container');
+            container.innerHTML = '';
+            rules[currentLang].forEach(rule => {
+                const div = document.createElement('div');
+                div.className = 'rule';
+                div.innerText = rule;
+                container.appendChild(div);
+            });
+        }
+        
+        function switchLanguage() {
+            if (currentLang === 'english') currentLang = 'urdu';
+            else if (currentLang === 'urdu') currentLang = 'hindi';
+            else currentLang = 'english';
+            displayRules();
+        }
+
+        function toggleModal() {
+            const modal = document.getElementById('groupModal');
+            modal.style.display = (modal.style.display === 'block') ? 'none' : 'block';
+        }
+
+        displayRules();
+    </script>
+</body>
+</html>
