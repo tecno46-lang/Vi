@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tech For V I</title>
+    <style>
+        /* ===== RESET & VARIABLES ===== */
+        :root {
+            --bg: #f5f7fa;
+            --card: #ffffff;
+            --text: #1e2a3a;
+            --border: #d0d7e2;
+            --accent: #0a6bff;
+            --shadow: 0 6px 24px rgba(0,0,0,0.06);
+            --radius: 14px;
+            --font: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #12161c;
+                --card: #1e2630;
+                --text: #e8edf5;
+                --border: #2f3a47;
+                --accent: #4a9eff;
+                --shadow: 0 6px 24px rgba(0,0,0,0.4);
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            padding: 20px 20px 130px;
+            line-height: 1.7;
+            transition: background 0.2s, color 0.2s;
+            min-height: 100vh;
+        }
+
+        /* ===== HEADER ===== */
+        .app-header {
+            text-align: center;
+            padding: 28px 20px 18px;
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 28px;
+            transition: background 0.2s;
+        }
+
+        .app-header h1 {
+            font-size: clamp(26px, 5vw, 38px);
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            color: var(--text);
+        }
+
+        /* ===== RULES ===== */
+        #rules-container {
+            max-width: 860px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .rule-card {
+            background: var(--card);
+            border-left: 5px solid var(--accent);
+            padding: 18px 22px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            font-size: clamp(17px, 1.3vw, 21px);
+            line-height: 1.8;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+
+        .rule-card:hover {
+            transform: translateX(4px);
+            box-shadow: 0 8px 28px rgba(0,0,0,0.08);
+        }
+
+        /* ===== SCREEN READER ONLY ===== */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
+        /* ===== BOTTOM CONTROLS ===== */
+        .controls {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            padding: 16px 20px;
+            background: var(--card);
+            border-top: 1px solid var(--border);
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.06);
+            z-index: 1000;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .controls button {
+            padding: 14px 32px;
+            font-size: 18px;
+            font-weight: 600;
+            border: none;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--bg);
+            color: var(--text);
+            border: 2px solid var(--border);
+            min-width: 160px;
+            letter-spacing: 0.3px;
+        }
+
+        .controls button:hover,
+        .controls button:focus-visible {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+
+        .controls button:focus-visible {
+            outline: 3px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        .btn-primary {
+            background: var(--accent) !important;
+            color: #fff !important;
+            border-color: var(--accent) !important;
+        }
+
+        .btn-primary:hover {
+            background: #0055d4 !important;
+            border-color: #0055d4 !important;
+        }
+
+        /* ===== MODAL ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            animation: fadeIn 0.2s ease;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal[aria-hidden="false"] {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.96); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-content {
+            background: var(--card);
+            max-width: 660px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px 28px;
+            border-radius: var(--radius);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+        }
+
+        .modal-content h2 {
+            font-size: 26px;
+            margin-bottom: 4px;
+            color: var(--accent);
+        }
+
+        .modal-content .subtitle {
+            color: var(--text);
+            opacity: 0.8;
+            margin-bottom: 24px;
+            font-size: 16px;
+        }
+
+        /* Each group is just a button, no heading */
+        .group-section {
+            margin: 10px 0;
+            padding: 0;
+            background: transparent;
+            border: none;
+        }
+
+        .group-section button {
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 17px;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            background: var(--bg);
+            color: var(--text);
+            border: 2px solid var(--border);
+            transition: all 0.2s;
+            text-align: left;
+            padding-left: 24px;
+        }
+
+        .group-section button:hover,
+        .group-section button:focus-visible {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+            transform: scale(1.01);
+        }
+
+        .group-section button:focus-visible {
+            outline: 3px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        .modal-close-btn {
+            width: 100%;
+            margin-top: 24px;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: 700;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            background: transparent;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .modal-close-btn:hover,
+        .modal-close-btn:focus-visible {
+            background: var(--border);
+            border-color: var(--accent);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 640px) {
+            body { padding: 12px 12px 140px; }
+            .controls { flex-direction: column; align-items: center; gap: 10px; padding: 12px 16px; }
+            .controls button { width: 100%; max-width: 320px; min-width: unset; padding: 14px 20px; font-size: 17px; }
+            .modal-content { padding: 22px 16px; }
+            .rule-card { padding: 14px 16px; font-size: 16px; }
+            .app-header h1 { font-size: 24px; }
+            .group-section button { padding: 14px 16px; font-size: 16px; }
+        }
+
+        @media (max-width: 400px) {
+            .controls button { font-size: 15px; padding: 12px 16px; }
+            .group-section button { font-size: 15px; padding: 12px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+        }
+
+        :focus-visible {
+            outline: 3px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #0055d4; }
+    </style>
+</head>
+<body>
+
+    <!-- ===== SCREEN READER ANNOUNCER ===== -->
+    <div id="announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- ===== HEADER ===== -->
+    <header class="app-header">
+        <h1>welcome to tech for v i community guidelines</h1>
+    </header>
+
+    <!-- ===== RULES ===== -->
+    <main id="rules-container" role="main" aria-label="Community rules"></main>
+
+    <!-- ===== BOTTOM CONTROLS ===== -->
+    <nav class="controls" role="navigation" aria-label="Main navigation">
+        <button id="switchLangBtn" class="btn-secondary">Switch Language</button>
+        <button id="joinGroupBtn" class="btn-primary">Join Group</button>
+    </nav>
+
+    <!-- ===== MODAL ===== -->
+    <div id="groupModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true">
+        <div class="modal-content" role="document">
+            <h2 id="modalTitle">Join Our Community</h2>
+            <p class="subtitle">Developed by Muhammad Hanzala</p>
+
+            <!-- فقط بٹن – کوئی ہیڈنگ نہیں -->
+            <div class="group-section">
+                <button onclick="window.open('https://chat.whatsapp.com/IXj2F9kdidIFHMKn0YvVKv','_blank')">join Tech for V I for male group</button>
+            </div>
+            <div class="group-section">
+                <button onclick="window.open('https://chat.whatsapp.com/LuS8Ssq3b4O5JCUGJVjUdH','_blank')">join Tech For V I For Female group</button>
+            </div>
+            <div class="group-section">
+                <button onclick="window.open('https://chat.whatsapp.com/FRVeT8f5PuZ1sinYpfiuj2','_blank')">join Tech For V I International English Text Only group</button>
+            </div>
+            <div class="group-section">
+                <button onclick="window.open('https://chat.whatsapp.com/KYX4UXCQMT80KAHem7F2IZ','_blank')">join Codeing Lab By Tech For V I group</button>
+            </div>
+            <div class="group-section">
+                <button onclick="window.open('https://chat.whatsapp.com/JnzETZ7fo8EKeh1vtuQeAM','_blank')">join Tech For V I Gaming club</button>
+            </div>
+
+            <button class="modal-close-btn" id="closeModalBtn">Close Window</button>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // =============================================
+            //  RULES DATA – exactly as you provided (with numbering)
+            //  Now we will render them without adding extra numbering.
+            // =============================================
+            const RULES = {
+                english: [
+                    "Rule 1: It is mandatory to introduce yourself within 24 hours of joining the group, including your full name, country, city, and the device you are using. If you use a computer, mention your computer name, Windows version, and the screen reader you are using.",
+                    "Rule 2: Before asking any question, state your name, device name, and Android version. If your question is about a computer, mention the manufacturer, Windows version, and the screen reader you are using on the computer.",
+                    "Rule 3: Keep your message clear, keep the screen reader volume low, be point-to-point, and strictly limit the conversation to the question. If you are requesting an application, it is mandatory to provide your mobile name and Android version so that we can send you the appropriate application. Avoid unnecessary discussion.",
+                    "Rule 4: If you do not receive a response to your question or app request within 24 hours, you may resend your message after this time. However, if you resend the message within 24 hours, you will be warned, and if you continue to do so, you will be removed from the group.",
+                    "Rule 5: Treat each other with respect, avoid unnecessary arguments, and when replying to someone, first select their message so that it is known as a reply. Speak patiently and avoid using any kind of offensive language.",
+                    "Rule 6: Once you receive an answer, react to that person's message with a (thumbs up) or (red heart); there is no need to say thank you or welcome separately.",
+                    "Rule 7: It is strictly forbidden to share any kind of articles, social media links, emojis, audio, unrelated videos, or images in the group. If anyone sends any of these items, they will be removed from the group without notice.",
+                    "Rule 8: Share an application or video link in the group only when a member has specifically requested it. Avoid sharing links without being asked.",
+                    "Rule 9: Sending personal messages to any member is prohibited. If you want to contact someone, first seek their consent in the group. If you contact a user in their personal chat without permission and that user complains to the admin, you will be removed from the group without notice."
+                ],
+                urdu: [
+                    "قاعدہ 1: گروپ میں شامل ہونے کے بعد 24 گھنٹوں کے اندر اپنا تعارف کروانا لازمی ہے جس میں آپ کا پورا نام، ملک، شہر اور استعمال ہونے والی ڈیوائس شامل ہو۔ اگر آپ کمپیوٹر استعمال کرتے ہیں، تو اپنے کمپیوٹر کا نام، ونڈوز کا ورژن اور استعمال ہونے والا سکرین ریڈر بھی بتائیں۔",
+                    "قاعدہ 2: کوئی بھی سوال پوچھنے سے پہلے اپنا نام، ڈیوائس کا نام، اور اینڈرائیڈ ورژن بتائیں۔ اگر آپ کا سوال کمپیوٹر کے حوالے سے ہے، تو مینوفیکچرر، ونڈوز ورژن کا ذکر کریں اور بتائیں کہ کمپیوٹر میں کون سا سکرین ریڈر استعمال کر رہے ہیں۔",
+                    "قاعدہ 3: اپنا پیغام واضح رکھیں، سکرین ریڈر کی آواز کم رکھیں، پوائنٹ ٹو پوائنٹ بات کریں، اور گفتگو کو سختی سے سوال تک محدود رکھیں۔ اگر آپ نے کسی ایپلیکیشن کی ڈیمانڈ کرنی ہے، تو اپنے موبائل کا نام اور اینڈرائیڈ ورژن بتانا لازمی ہوگا تاکہ ہم آپ کو اس کے مطابق ایپلیکیشن بھیج سکیں۔ فضول بحث سے گریز کریں۔",
+                    "قاعدہ 4: اگر آپ کو اپنے سوال یا ایپ کی درخواست پر 24 گھنٹے کے اندر جواب نہ ملے، تو آپ اس وقت کے بعد اپنا پیغام دوبارہ بھیج سکتے ہیں۔ تاہم، اگر آپ 24 گھنٹے کے اندر ہی دوبارہ پیغام بھیجیں گے تو آپ کو وارننگ دی جائے گی، اور اگر آپ پھر بھی ایسا کرتے رہے تو آپ کو گروپ سے نکال دیا جائے گا۔",
+                    "قاعدہ 5: ایک دوسرے کے ساتھ احترام سے پیش آئیں، غیر ضروری بحث نہ کریں، اور جب کسی کو جواب دیں تو پہلے ان کا پیغام سلیکٹ کریں تاکہ معلوم ہو کہ یہ ایک جواب ہے۔ صبر سے بات کریں اور کسی بھی قسم کے توہین آمیز الفاظ استعمال کرنے سے گریز کریں۔",
+                    "قاعدہ 6: جب آپ کو جواب مل جائے، تو اس بندے کے پیغام پر (thumbs up) یا (red heart) کا reaction کریں، اور الگ سے شکریہ یا خوش آمدید کہنے کی ضرورت نہیں ہے۔",
+                    "قاعدہ 7: گروپ میں کسی بھی قسم کے آرٹیکلز، سوشل میڈیا لنکس، ایموجیز، آڈیو، غیر متعلقہ ویڈیو یا تصاویر شیئر کرنے کی سخت ممانعت ہے۔ اگر کوئی بھی بندہ ان چیزوں میں سے کچھ بھی بھیجے گا تو اسے بغیر بتائے گروپ سے ریموو کر دیا جائے گا۔",
+                    "قاعدہ 8: گروپ میں کوئی بھی ایپلیکیشن یا ویڈیو کا لنک تبھی شیئر کریں جب کسی رکن نے خاص طور پر اس کی درخواست کی ہو۔ بغیر مانگے لنکس شیئر کرنے سے گریز کریں۔",
+                    "قاعدہ 9: کسی رکن کو ذاتی پیغام بھیجنا منع ہے۔ اگر آپ کسی سے رابطہ کرنا چاہتے ہیں تو پہلے گروپ میں اس کی رضامندی لیں۔ اگر آپ کسی یوزر کی پرسنل چیٹ پر بغیر اجازت رابطہ کریں گے اور اس یوزر نے ایڈمن کو کمپلین کی، تو آپ کو بغیر بتائے گروپ سے ریموو کر دیا جائے گا۔"
+                ],
+                hindi: [
+                    "नियम 1: ग्रुप में शामिल होने के बाद 24 घंटों के भीतर अपना परिचय देना अनिवार्य है, जिसमें आपका पूरा नाम, देश, शहर और इस्तेमाल होने वाली डिवाइस शामिल हो। यदि आप कंप्यूटर का उपयोग करते हैं, तो अपने कंप्यूटर का नाम, विंडोज संस्करण और उपयोग किए जाने वाले स्क्रीन रीडर का उल्लेख करें।",
+                    "नियम 2: कोई भी प्रश्न पूछने से पहले अपना नाम, डिवाइस का नाम और एंड्रॉइड संस्करण बताएं। यदि आपका प्रश्न कंप्यूटर के बारे में है, तो निर्माता, विंडोज संस्करण और कंप्यूटर पर उपयोग किए जा रहे स्क्रीन रीडर का उल्लेख करें।",
+                    "नियम 3: अपना संदेश स्पष्ट रखें, स्क्रीन रीडर की आवाज़ कम रखें, पॉइंट-टू-पॉइंट बात करें और बातचीत को सख्ती से प्रश्न तक सीमित रखें। यदि आप किसी एप्लिकेशन का अनुरोध कर रहे हैं, तो अपने मोबाइल का नाम और एंड्रॉइड संस्करण प्रदान करना अनिवार्य है ताकि हम आपको उपयुक्त एप्लिकेशन भेज सकें। अनावश्यक चर्चा से बचें।",
+                    "नियम 4: यदि आपको 24 घंटों के भीतर अपने प्रश्न या ऐप अनुरोध का उत्तर नहीं मिलता है, तो आप इस समय के बाद अपना संदेश दोबारा भेज सकते हैं। हालाँकि, यदि आप 24 घंटों के भीतर संदेश दोबारा भेजते हैं, तो आपको चेतावनी दी जाएगी, और यदि आप ऐसा करना जारी रखते हैं, तो आपको ग्रुप से निकाल दिया जाएगा।",
+                    "नियम 5: एक-दूसरे के साथ सम्मान से पेश आएं, अनावश्यक बहस न करें, और जब किसी को उत्तर दें तो पहले उनका संदेश चुनें ताकि यह एक उत्तर के रूप में जाना जाए। धैर्य से बोलें और किसी भी प्रकार की अपमानजनक भाषा का प्रयोग करने से बचें।",
+                    "नियम 6: एक बार जब आपको उत्तर मिल जाए, तो उस व्यक्ति के संदेश पर (thumbs up) या (red heart) के साथ प्रतिक्रिया करें; अलग से धन्यवाद या स्वागत कहने की आवश्यकता नहीं है।",
+                    "नियम 7: ग्रुप में किसी भी प्रकार के लेख, सोशल मीडिया लिंक, इमोजी, ऑडियो, असंबंधित वीडियो या चित्र साझा करना सख्त मना है। यदि कोई भी इनमें से कोई भी वस्तु भेजता है, तो उसे बिना किसी सूचना के ग्रुप से हटा दिया जाएगा।",
+                    "नियम 8: ग्रुप में एप्लिकेशन या वीडियो का लिंक तभी साझा करें जब किसी सदस्य ने विशेष रूप से इसका अनुरोध किया हो। बिना मांगे लिंक साझा करने से बचें।",
+                    "नियम 9: किसी भी सदस्य को व्यक्तिगत संदेश भेजना मना है। यदि आप किसी से संपर्क करना चाहते हैं, तो पहले ग्रुप में उनकी सहमति लें। यदि आप बिना अनुमति के किसी उपयोगकर्ता को उनकी व्यक्तिगत चैट पर संपर्क करते हैं और वह उपयोगकर्ता एडमिन से शिकायत करता है, तो आपको बिना किसी सूचना के ग्रुप से हटा दिया जाएगा।"
+                ]
+            };
+
+            const LANG_NAMES = ['english', 'urdu', 'hindi'];
+            let currentLang = 'english';
+
+            const container = document.getElementById('rules-container');
+            const announcer = document.getElementById('announcer');
+            const modal = document.getElementById('groupModal');
+            let isModalOpen = false;
+
+            // =============================================
+            //  RENDER – now we just display the text as is
+            //  No extra numbering added.
+            // =============================================
+            function renderRules() {
+                const rules = RULES[currentLang];
+                if (!rules) return;
+
+                const fragment = document.createDocumentFragment();
+                rules.forEach((text) => {
+                    const card = document.createElement('div');
+                    card.className = 'rule-card';
+                    card.textContent = text; // exactly as provided
+                    fragment.appendChild(card);
+                });
+
+                container.innerHTML = '';
+                container.appendChild(fragment);
+            }
+
+            // =============================================
+            //  LANGUAGE SWITCH
+            // =============================================
+            function switchLanguage() {
+                const idx = LANG_NAMES.indexOf(currentLang);
+                const next = (idx + 1) % LANG_NAMES.length;
+                currentLang = LANG_NAMES[next];
+                renderRules();
+                announcer.textContent = 'Language changed.';
+            }
+
+            // =============================================
+            //  MODAL
+            // =============================================
+            function openModal() {
+                if (isModalOpen) return;
+                isModalOpen = true;
+                modal.setAttribute('aria-hidden', 'false');
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+                const firstBtn = modal.querySelector('button');
+                if (firstBtn) setTimeout(() => firstBtn.focus(), 50);
+                announcer.textContent = 'Join group dialog opened.';
+            }
+
+            function closeModal() {
+                if (!isModalOpen) return;
+                isModalOpen = false;
+                modal.setAttribute('aria-hidden', 'true');
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                document.getElementById('joinGroupBtn').focus();
+                announcer.textContent = 'Dialog closed.';
+            }
+
+            function toggleModal() {
+                isModalOpen ? closeModal() : openModal();
+            }
+
+            // =============================================
+            //  KEYBOARD TRAP FOR MODAL
+            // =============================================
+            document.addEventListener('keydown', function(e) {
+                if (!isModalOpen) return;
+                if (e.key === 'Escape') {
+                    e.preventDefault();
+                    closeModal();
+                    return;
+                }
+                if (e.key === 'Tab') {
+                    const focusable = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+                    if (focusable.length === 0) return;
+                    const first = focusable[0];
+                    const last = focusable[focusable.length - 1];
+                    if (e.shiftKey && document.activeElement === first) {
+                        e.preventDefault();
+                        last.focus();
+                    } else if (!e.shiftKey && document.activeElement === last) {
+                        e.preventDefault();
+                        first.focus();
+                    }
+                }
+            });
+
+            // close on backdrop click
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) closeModal();
+            });
+
+            // =============================================
+            //  BIND EVENTS
+            // =============================================
+            document.getElementById('switchLangBtn').addEventListener('click', switchLanguage);
+            document.getElementById('joinGroupBtn').addEventListener('click', toggleModal);
+            document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+
+            // =============================================
+            //  INIT
+            // =============================================
+            renderRules();
+            console.log('Tech for V I — ready');
+        })();
+    </script>
+</body>
+</html>
