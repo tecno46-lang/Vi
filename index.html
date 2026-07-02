@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech For V I</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; line-height: 1.8; margin-bottom: 80px; }
+        .heading { text-align: center; font-size: 32px; font-weight: bold; margin-bottom: 30px; }
+        .rule { font-size: 22px; margin-bottom: 20px; display: block; border-bottom: 1px solid #ccc; padding-bottom: 10px; }
+        
+        /* Bottom Fixed Controls */
+        .controls { position: fixed; bottom: 0; left: 0; width: 100%; display: flex; justify-content: space-around; background: #333; padding: 15px 0; }
+        button { padding: 15px 30px; font-size: 18px; cursor: pointer; border-radius: 8px; border: none; }
+        
+        /* Accessible Full Screen Modal */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 2000; overflow-y: auto; padding: 20px; box-sizing: border-box; }
+        .modal-content { max-width: 700px; margin: auto; }
+        .modal-content p { font-size: 20px; }
+        .modal-content button { display: block; width: 100%; margin: 10px 0; font-size: 18px; }
+    </style>
+</head>
+<body>
+
+    <div class="heading">Welcome to Tech for V I</div>
+    <div id="rules-container" role="main"></div>
+
+    <div class="controls" role="navigation">
+        <button onclick="switchLanguage()">Switch Language</button>
+        <button onclick="toggleModal()">Join Group</button>
+    </div>
+
+    <!-- Accessible Full Screen Modal -->
+    <div id="groupModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-content">
+            <h2 id="modal-title">Developed by Muhammad Hanzala</h2>
+            
+            <p>If you are a male and you are from India or Pakistan, you can join this group:</p>
+            <button onclick="window.location.href='https://chat.whatsapp.com/JtUiteJHCbGARylI729svT'">Join Male Group</button>
+            
+            <p>If you are a female and you are from Pakistan or India, you can join this group:</p>
+            <button onclick="window.location.href='https://chat.whatsapp.com/EZhMNcxZs8GKd78iMNxMDC'">Join Female Group</button>
+            
+            <p>If you are not from Pakistan or India and want to join our group, this group is for you:</p>
+            <button onclick="window.location.href='https://chat.whatsapp.com/FDQxGVfsjuTBKBaYxzw3s2'">Join International Group</button>
+            
+            <p>If you have an interest in coding and belong to any country, you can join our group:</p>
+            <button onclick="window.location.href='https://chat.whatsapp.com/BcbwAqoM9PuJEYSMxXTBrC'">Join Coding Group</button>
+            
+            <p>If you play any games like Hand Cricket or board games, you can join our gaming group and play with your friends:</p>
+            <button onclick="window.location.href='https://chat.whatsapp.com/D6uukm3O593ATI8HZfqKBU'">Join Gaming Group</button>
+            
+            <br><button onclick="toggleModal()">Close Window</button>
+        </div>
+    </div>
+
+    <script>
+        const rules = {
+            english: [
+                "Rule 1: It is mandatory to introduce yourself within 24 hours of joining the group, including your full name, country, city, and the device you are using.",
+                "Rule 2: Before asking any question, state your name, device name, and Android version.",
+                "Rule 3: Keep your message clear, keep the screen reader volume low, and strictly limit the conversation to the question.",
+                "Rule 4: If you do not receive a response within 24 hours, you may resend your message.",
+                "Rule 5: Treat each other with respect, avoid unnecessary arguments, and use reply feature.",
+                "Rule 6: Once you receive an answer, react with a (thumbs up) or (red heart).",
+                "Rule 7: Articles, social media links, emojis, audio, or images are strictly prohibited.",
+                "Rule 8: Share links only when a member has specifically requested it.",
+                "Rule 9: Sending personal messages to any member without consent is prohibited."
+            ],
+            urdu: [
+                "قاعدہ 1: گروپ میں شامل ہونے کے بعد 24 گھنٹوں کے اندر اپنا تعارف کروانا لازمی ہے جس میں آپ کا پورا نام، ملک، شہر اور استعمال ہونے والی ڈیوائس شامل ہو۔",
+                "قاعدہ 2: کوئی بھی سوال پوچھنے سے پہلے اپنا نام، ڈیوائس کا نام، اور اینڈرائیڈ ورژن بتائیں۔",
+                "قاعدہ 3: اپنا پیغام واضح رکھیں، سکرین ریڈر کی آواز کم رکھیں، اور گفتگو کو سختی سے سوال تک محدود رکھیں۔",
+                "قاعدہ 4: اگر آپ کو 24 گھنٹے کے اندر جواب نہ ملے، تو آپ اپنا پیغام دوبارہ بھیج سکتے ہیں۔",
+                "قاعدہ 5: ایک دوسرے کے ساتھ احترام سے پیش آئیں، غیر ضروری بحث نہ کریں، اور ریپلائی فیچر استعمال کریں۔",
+                "قاعدہ 6: جب آپ کو جواب مل جائے، تو اس پیغام پر (thumbs up) یا (red heart) کا ری ایکشن دیں۔",
+                "قاعدہ 7: آرٹیکلز، سوشل میڈیا لنکس، ایموجیز، آڈیو، یا تصاویر شیئر کرنے کی سخت ممانعت ہے۔",
+                "قاعدہ 8: لنک تبھی شیئر کریں جب کسی رکن نے خاص طور پر اس کی درخواست کی ہو۔",
+                "قاعدہ 9: کسی رکن کو اجازت کے بغیر ذاتی پیغام بھیجنا منع ہے۔"
+            ],
+            hindi: [
+                "नियम 1: ग्रुप में शामिल होने के बाद 24 घंटों के भीतर अपना परिचय देना अनिवार्य है, जिसमें आपका नाम, देश, शहर और डिवाइस का नाम शामिल हो।",
+                "नियम 2: प्रश्न पूछने से पहले अपना नाम, डिवाइस का नाम और एंड्रॉइड संस्करण बताएं।",
+                "नियम 3: अपना संदेश स्पष्ट रखें, स्क्रीन रीडर की आवाज़ कम रखें और बातचीत को प्रश्न तक सीमित रखें।",
+                "नियम 4: यदि 24 घंटों के भीतर उत्तर न मिले, तो आप संदेश दोबारा भेज सकते हैं।",
+                "नियम 5: सम्मान से पेश आएं, अनावश्यक बहस न करें और रिप्लाई फीचर का उपयोग करें।",
+                "नियम 6: उत्तर मिलने पर (thumbs up) या (red heart) के साथ प्रतिक्रिया करें।",
+                "नियम 7: लेख, सोशल मीडिया लिंक, इमोजी, ऑडियो या चित्र साझा करना सख्त मना है।",
+                "नियम 8: लिंक तभी साझा करें जब किसी सदस्य ने अनुरोध किया हो।",
+                "नियम 9: बिना अनुमति के किसी को व्यक्तिगत संदेश भेजना मना है।"
+            ]
+        };
+
+        let currentLang = 'english';
+        
+        function displayRules() {
+            const container = document.getElementById('rules-container');
+            container.innerHTML = '';
+            rules[currentLang].forEach(rule => {
+                const div = document.createElement('div');
+                div.className = 'rule';
+                div.innerText = rule;
+                container.appendChild(div);
+            });
+        }
+        
+        function switchLanguage() {
+            if (currentLang === 'english') currentLang = 'urdu';
+            else if (currentLang === 'urdu') currentLang = 'hindi';
+            else currentLang = 'english';
+            displayRules();
+        }
+
+        function toggleModal() {
+            const modal = document.getElementById('groupModal');
+            if (modal.style.display === 'block') {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            } else {
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        displayRules();
+    </script>
+</body>
+</html>
