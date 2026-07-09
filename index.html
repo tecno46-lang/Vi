@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tech For VI – Join Our Community</title>
+    <style>
+        /* RESET & BASE */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+            background: #f2f6fc;
+            color: #1e2a3a;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 880px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 24px 64px rgba(0, 20, 40, 0.12);
+            padding: 32px 36px 40px;
+            transition: all 0.2s ease;
+        }
+
+        /* PAGES */
+        .page {
+            display: block;
+        }
+        .page.hidden {
+            display: none;
+        }
+
+        /* HEADINGS */
+        .main-heading {
+            font-size: 2.3rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: #0a2a44;
+            text-align: center;
+            margin-bottom: 28px;
+            border-bottom: 3px solid #e2ebf5;
+            padding-bottom: 18px;
+            word-break: break-word;
+        }
+        .main-heading span {
+            color: #1a6b8a;
+        }
+
+        .page2-heading {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #0a2a44;
+            text-align: center;
+            margin-bottom: 6px;
+        }
+        .page2-sub {
+            text-align: center;
+            color: #4a5d6e;
+            margin-bottom: 28px;
+            font-size: 1.05rem;
+        }
+
+        /* RULES LIST */
+        .rules-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 32px 0;
+        }
+        .rules-list li {
+            background: #f8fcff;
+            border-left: 6px solid #1e7b9e;
+            padding: 14px 20px;
+            margin-bottom: 12px;
+            border-radius: 0 14px 14px 0;
+            font-size: 1.05rem;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
+            transition: background 0.15s;
+        }
+        .rules-list li:hover {
+            background: #eff6fd;
+        }
+        .rules-list li strong {
+            color: #0a2a44;
+        }
+
+        /* BUTTONS */
+        .btn {
+            display: inline-block;
+            padding: 14px 36px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 60px;
+            cursor: pointer;
+            background: #1e7b9e;
+            color: #fff;
+            transition: background 0.25s, transform 0.15s, box-shadow 0.25s;
+            box-shadow: 0 6px 20px rgba(30, 123, 158, 0.30);
+            text-align: center;
+            letter-spacing: 0.3px;
+        }
+        .btn:hover,
+        .btn:focus-visible {
+            background: #146180;
+            transform: scale(1.02);
+            box-shadow: 0 8px 28px rgba(30, 123, 158, 0.40);
+            outline: 3px solid #9fc9dd;
+            outline-offset: 2px;
+        }
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn-join {
+            width: 100%;
+            max-width: 320px;
+            display: block;
+            margin: 0 auto;
+            font-size: 1.4rem;
+            padding: 18px 20px;
+            background: #0f5b7a;
+            box-shadow: 0 8px 28px rgba(15, 91, 122, 0.35);
+        }
+        .btn-join:hover,
+        .btn-join:focus-visible {
+            background: #0a455e;
+            box-shadow: 0 10px 34px rgba(15, 91, 122, 0.45);
+        }
+
+        /* GROUP BUTTONS (page 2) */
+        .group-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .group-btn {
+            width: 100%;
+            padding: 16px 24px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 60px;
+            cursor: pointer;
+            background: #e9f0f8;
+            color: #0a2a44;
+            transition: background 0.25s, transform 0.15s, box-shadow 0.25s;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            letter-spacing: 0.2px;
+        }
+        .group-btn:hover,
+        .group-btn:focus-visible {
+            background: #d4e2f0;
+            transform: scale(1.01);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            outline: 3px solid #9fc9dd;
+            outline-offset: 2px;
+        }
+        .group-btn:active {
+            transform: scale(0.98);
+        }
+
+        .back-wrap {
+            text-align: center;
+            margin-top: 8px;
+        }
+        .btn-back {
+            background: #dce3ec;
+            color: #1e2a3a;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            padding: 12px 30px;
+            font-size: 1rem;
+        }
+        .btn-back:hover,
+        .btn-back:focus-visible {
+            background: #c8d2df;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.10);
+            outline: 3px solid #b0c4d4;
+            outline-offset: 2px;
+        }
+
+        /* MODAL (WhatsApp chooser) */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-box {
+            background: #ffffff;
+            border-radius: 32px;
+            max-width: 440px;
+            width: 100%;
+            padding: 32px 28px 28px;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.25);
+            transform: scale(0.95) translateY(10px);
+            transition: transform 0.3s ease;
+        }
+        .modal-overlay.active .modal-box {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #0a2a44;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .modal-sub {
+            text-align: center;
+            color: #4a5d6e;
+            margin-bottom: 24px;
+            font-size: 1rem;
+        }
+        .modal-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .modal-btn {
+            padding: 14px;
+            border: none;
+            border-radius: 60px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            background: #e9f0f8;
+            color: #0a2a44;
+            text-align: center;
+        }
+        .modal-btn:hover,
+        .modal-btn:focus-visible {
+            background: #d4e2f0;
+            outline: 3px solid #9fc9dd;
+            outline-offset: 2px;
+        }
+        .modal-btn.primary {
+            background: #1e7b9e;
+            color: #fff;
+        }
+        .modal-btn.primary:hover,
+        .modal-btn.primary:focus-visible {
+            background: #146180;
+        }
+        .modal-close {
+            margin-top: 16px;
+            background: transparent;
+            border: none;
+            color: #5a6f82;
+            font-size: 0.95rem;
+            text-decoration: underline;
+            cursor: pointer;
+            padding: 8px;
+        }
+        .modal-close:hover {
+            color: #1e2a3a;
+        }
+
+        /* Accessible focus */
+        :focus-visible {
+            outline: 3px solid #1e7b9e;
+            outline-offset: 2px;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px 16px 28px;
+            }
+            .main-heading {
+                font-size: 1.8rem;
+            }
+            .rules-list li {
+                font-size: 0.98rem;
+                padding: 12px 16px;
+            }
+            .btn-join {
+                font-size: 1.2rem;
+                padding: 16px 20px;
+            }
+            .group-btn {
+                font-size: 1rem;
+                padding: 14px 18px;
+            }
+            .modal-box {
+                padding: 24px 20px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" role="main">
+        <!-- ========== PAGE 1: RULES ========== -->
+        <div id="page1" class="page">
+            <h1 class="main-heading">welcome to tech for <span>V I</span></h1>
+
+            <ol class="rules-list" aria-label="Group rules">
+                <li><strong>1.</strong> After joining the group, it is mandatory to provide your introduction within 24 hours, including your full name, country, city, and the device you use.</li>
+                <li><strong>2.</strong> Before asking any question, you must mention your name, device name, and Android version; and if your question is about a computer, you must mention the manufacturer and the Windows version, and explain how to use the screen reader.</li>
+                <li><strong>3.</strong> Keep your voice message clear, lower the volume of your screen reader, address the issue point-to-point, and limit your conversation strictly to the question at hand, avoiding any off-topic chit-chat.</li>
+                <li><strong>4.</strong> If you don't receive a response to your question or app request within 24 hours, you may repeat your message after that time. However, if you repeat it within 24 hours, you will receive a warning, and if you still continue to do so, you will be removed from the group.</li>
+                <li><strong>5.</strong> Always treat others with respect, avoid unnecessary arguments, and when replying to a user, make sure to select their message first so they know it is a reply. Always speak with patience and refrain from using any offensive language.</li>
+                <li><strong>6.</strong> Sharing any kind of articles, application links, or social media links is strictly prohibited in this group, unless a member has specifically requested a link for an application or tutorial. If you share links without a request, you will be removed from the group immediately.</li>
+                <li><strong>7.</strong> Direct messaging any group member without their prior permission is strictly prohibited. If you wish to contact another member, you must ask for their consent within the group first. If you make personal contact without permission and the other member complains to the admin, you will be removed from the group immediately without warning.</li>
+                <li><strong>8.</strong> Once you receive a reply, be sure to react to that person's message with a thumbs up or red heart, and there is no need to send separate welcome or thanks messages.</li>
+            </ol>
+
+            <p style="text-align:center; margin-bottom:24px; color:#3a4f62; font-size:1rem;">
+                Please note that before you click the 'Join group' button, you must read all these rules. Also, after you join, the admin might ask you about any of these rules to ensure you have read them.
+            </p>
+
+            <button class="btn btn-join" id="joinGroupBtn" aria-label="Join group, proceed to group selection">
+                Join Group
+            </button>
+        </div>
+
+        <!-- ========== PAGE 2: GROUP SELECTION ========== -->
+        <div id="page2" class="page hidden">
+            <h2 class="page2-heading">Choose your group</h2>
+            <p class="page2-sub">Tap a button below to join the community that fits you</p>
+
+            <div class="group-grid" role="list">
+                <!-- Each button stores its link in data-link -->
+                <button class="group-btn" data-link="https://chat.whatsapp.com/IXj2F9kdidIFHMKn0YvVKv" role="listitem">
+                    join Tech for V I for male group
+                </button>
+                <button class="group-btn" data-link="https://chat.whatsapp.com/LuS8Ssq3b4O5JCUGJVjUdH" role="listitem">
+                    join Tech For V I For Female group
+                </button>
+                <button class="group-btn" data-link="https://chat.whatsapp.com/KYX4UXCQMT80KAHem7F2IZ" role="listitem">
+                    join Codeing Lab By Tech For V I group
+                </button>
+                <button class="group-btn" data-link="https://chat.whatsapp.com/FRVeT8f5PuZ1sinYpfiuj2" role="listitem">
+                    join Tech For V I International English Text Only group
+                </button>
+                <button class="group-btn" data-link="https://chat.whatsapp.com/JnzETZ7fo8EKeh1vtuQeAM" role="listitem">
+                    join Tech For V I Gaming club
+                </button>
+            </div>
+
+            <div class="back-wrap">
+                <button class="btn btn-back" id="backToRulesBtn" aria-label="Go back to rules page">
+                    ← Back to rules
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== MODAL (WhatsApp chooser) ========== -->
+    <div class="modal-overlay" id="whatsappModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-box">
+            <h3 id="modalTitle" class="modal-title">Open with WhatsApp</h3>
+            <p class="modal-sub" id="modalGroupName">Choose which app to use</p>
+            <div class="modal-actions">
+                <button class="modal-btn primary" id="openWhatsAppBtn">WhatsApp Messenger</button>
+                <button class="modal-btn primary" id="openWhatsAppBusinessBtn">WhatsApp Business</button>
+                <button class="modal-close" id="closeModalBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            "use strict";
+
+            // DOM refs
+            const page1 = document.getElementById('page1');
+            const page2 = document.getElementById('page2');
+            const joinBtn = document.getElementById('joinGroupBtn');
+            const backBtn = document.getElementById('backToRulesBtn');
+            const modalOverlay = document.getElementById('whatsappModal');
+            const modalGroupName = document.getElementById('modalGroupName');
+            const openWhatsApp = document.getElementById('openWhatsAppBtn');
+            const openWhatsAppBusiness = document.getElementById('openWhatsAppBusinessBtn');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+
+            let currentGroupLink = '';   // store the link when a group button is clicked
+            let lastFocusedElement = null; // for focus management
+
+            // --- Helper: switch page ---
+            function showPage(pageId) {
+                if (pageId === 'page1') {
+                    page1.classList.remove('hidden');
+                    page2.classList.add('hidden');
+                    // Focus the join button when returning to page1
+                    setTimeout(() => joinBtn.focus(), 50);
+                } else if (pageId === 'page2') {
+                    page1.classList.add('hidden');
+                    page2.classList.remove('hidden');
+                    // Focus the first group button
+                    const firstGroupBtn = document.querySelector('.group-btn');
+                    if (firstGroupBtn) setTimeout(() => firstGroupBtn.focus(), 50);
+                }
+            }
+
+            // --- Modal control ---
+            function openModal(link, groupName) {
+                currentGroupLink = link;
+                modalGroupName.textContent = groupName || 'Join group';
+                modalOverlay.classList.add('active');
+                // Store currently focused element to return later
+                lastFocusedElement = document.activeElement;
+                // Focus first button in modal
+                setTimeout(() => openWhatsApp.focus(), 100);
+                // Prevent background scroll
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeModal() {
+                modalOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+                // Return focus to the element that opened the modal
+                if (lastFocusedElement && lastFocusedElement.focus) {
+                    lastFocusedElement.focus();
+                }
+                currentGroupLink = '';
+            }
+
+            // --- Open WhatsApp link with a specific app ---
+            function openWithApp(link, appType) {
+                // appType: 'whatsapp' or 'whatsappbusiness'
+                // We'll try to open via deep link.
+                // For Android we can use intent: scheme.
+                // For iOS and others, we use the standard https link, but we can also try custom schemes.
+                // We'll attempt multiple methods: first try the specific scheme, then fallback to https.
+
+                let url = link; // fallback
+
+                // Detect if on Android
+                const isAndroid = /android/i.test(navigator.userAgent);
+                // Detect if on iOS
+                const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+
+                if (isAndroid) {
+                    // Use intent:// with package
+                    const packageName = (appType === 'whatsapp') ? 'com.whatsapp' : 'com.whatsapp.w4b';
+                    // We need to encode the link properly
+                    const encodedLink = encodeURIComponent(link);
+                    // Intent URL: intent://chat.whatsapp.com/...?package=...
+                    // Actually we can use intent:// for the specific path
+                    // Extract the path after https://chat.whatsapp.com/
+                    const path = link.replace('https://chat.whatsapp.com/', '');
+                    const intentUrl = `intent://chat.whatsapp.com/${path}#Intent;package=${packageName};scheme=https;end;`;
+                    url = intentUrl;
+                } else if (isIOS) {
+                    // iOS: use the custom URL scheme for the app
+                    // For WhatsApp: whatsapp://
+                    // For WhatsApp Business: whatsappbusiness://
+                    // But we can't directly open a group invite via these schemes; they are for messaging.
+                    // However, we can use the https link and iOS will prompt to open in the respective app if installed.
+                    // We can try to use the universal link: https://chat.whatsapp.com/... will open in the app.
+                    // So we keep the https link.
+                    // But we can't force a specific app on iOS.
+                    // We'll just use the https link.
+                    url = link;
+                } else {
+                    // Desktop or other: use https
+                    url = link;
+                }
+
+                // Attempt to open
+                try {
+                    window.open(url, '_blank');
+                } catch (e) {
+                    // Fallback
+                    window.location.href = url;
+                }
+
+                // Close modal after opening
+                closeModal();
+            }
+
+            // --- Event listeners for group buttons ---
+            document.querySelectorAll('.group-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    const link = this.getAttribute('data-link');
+                    if (!link) return;
+                    // Get the group name from the button text (trim)
+                    const groupName = this.textContent.trim() || 'group';
+                    // Open modal
+                    openModal(link, groupName);
+                });
+            });
+
+            // Modal buttons
+            openWhatsApp.addEventListener('click', function() {
+                if (currentGroupLink) {
+                    openWithApp(currentGroupLink, 'whatsapp');
+                }
+            });
+
+            openWhatsAppBusiness.addEventListener('click', function() {
+                if (currentGroupLink) {
+                    openWithApp(currentGroupLink, 'whatsappbusiness');
+                }
+            });
+
+            closeModalBtn.addEventListener('click', closeModal);
+
+            // Close modal on overlay click (click outside box)
+            modalOverlay.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModal();
+                }
+            });
+
+            // Close modal on Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+                    closeModal();
+                }
+            });
+
+            // --- Page navigation ---
+            joinBtn.addEventListener('click', function() {
+                showPage('page2');
+            });
+
+            backBtn.addEventListener('click', function() {
+                showPage('page1');
+            });
+
+            // --- Initial focus: page1 join button ---
+            window.addEventListener('load', function() {
+                joinBtn.focus();
+            });
+
+            // --- Trap focus inside modal when open ---
+            modalOverlay.addEventListener('keydown', function(e) {
+                if (e.key === 'Tab') {
+                    const focusableElements = modalOverlay.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+                    const firstElement = focusableElements[0];
+                    const lastElement = focusableElements[focusableElements.length - 1];
+                    if (!firstElement || !lastElement) return;
+
+                    if (e.shiftKey && document.activeElement === firstElement) {
+                        e.preventDefault();
+                        lastElement.focus();
+                    } else if (!e.shiftKey && document.activeElement === lastElement) {
+                        e.preventDefault();
+                        firstElement.focus();
+                    }
+                }
+            });
+
+        })();
+    </script>
+</body>
+</html>
